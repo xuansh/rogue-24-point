@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dxo7xjuuv1y7"]
+
+[ext_resource type="Script" uid="uid://bbughx06wlvl8" path="res://Test/tets.gd" id="1_0t8dd"]
+[ext_resource type="Script" uid="uid://5l4o7kjjdxsx" path="res://Core/Battle/battle_system.gd" id="2_v4qk2"]
+
+[node name="World" type="Node" unique_id=2092188705]
+script = ExtResource("1_0t8dd")
+
+[node name="BattleControl" type="Node" parent="." unique_id=1801182060]
+
+[node name="BattleSystem" type="Node" parent="BattleControl" unique_id=718390226]
+script = ExtResource("2_v4qk2")
