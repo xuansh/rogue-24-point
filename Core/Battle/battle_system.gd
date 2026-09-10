@@ -5,11 +5,13 @@ class_name BattleSystem
 var battle_state := BattleState.new()
 var enemy_system := EnemySystem.new()
 var deck_system := DeckSystem.new()
+var turn_system := TurnSystem.new()
 
 func init_battle():
 	init_player()
-	enemy_system.init_enemies()
-	deck_system.init_deck()
+	enemy_system.init()
+	deck_system.init()
+	turn_system.init(battle_state, enemy_system.enemy_state)
 
 func init_player():
 	battle_state.player_hp = Run.player_hp

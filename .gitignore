@@ -1,3 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# AI config files (optional, can be committed if desired)
+.cursorrules
+.claude*
+.windsurfrules

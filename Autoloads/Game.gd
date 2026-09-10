@@ -20,7 +20,7 @@ func change_state(new_state : GameState):
 		return
 	
 	var old_state := state
-	var state = new_state
+	state = new_state
 	
 	#TEST
 	print(

@@ -1,5 +1,5 @@
 extends Node
-var floor: int = 0
+var _floor: int = 0
 var gold: int = 0
 
 var player_hp = 100
@@ -13,7 +13,7 @@ func init_run():
 	reset()
 
 func reset() -> void:
-	floor = 0
+	_floor = 0
 	player_max_hp = 100
 	player_hp = player_max_hp
 	

@@ -5,7 +5,7 @@ class_name DeckSystem
 var deck_state := DeckState.new()
 
 ## 绝大多数是被init_battle() 里调用
-func init_deck():
+func init():
 	deck_state.draw_pile = []
 	deck_state.hand_pile = []
 	deck_state.discard_pile = []
@@ -23,3 +23,6 @@ func init_deck():
 		", Hand Pile: ",
 		deck_state.hand_pile
 	)
+
+func reset_draw_pile():
+	pass

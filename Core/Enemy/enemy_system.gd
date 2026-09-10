@@ -3,7 +3,7 @@ class_name EnemySystem
 
 var enemy_state := EnemyState.new()
 
-func init_enemies():
+func init():
 	for i in range(enemy_state.enemies.size()):
 		#TEST
 		print(
@@ -17,3 +17,6 @@ func init_enemies():
 			", Enemy Current Behavior: ",
 			enemy_state.enemies[i].current_behavior
 		)
+
+func handle_action():
+	pass
