@@ -26,7 +26,12 @@ func init(_battle_state : BattleState, _enemy_state: EnemyState) -> void:
 	#endregion
 	
 	start_battle()
-	
+
+# 改变回合 并且发送信号
+func change_turn_phase(new_phase : TurnPhase):
+	current_phase = new_phase
+	turn_phase_changed.emit(new_phase)
+
 func start_battle():
 	
 	#region TEST
@@ -35,9 +40,10 @@ func start_battle():
 	
 	change_turn_phase(TurnPhase.IDLE)
 	
+	
 	start_player_turn()
 
-# 战斗循环的逻辑
+#region 战斗循环的逻辑
 func start_player_turn():
 	
 	battle_state.current_turn += 1
@@ -47,7 +53,7 @@ func start_player_turn():
 	#endregion
 	
 	change_turn_phase(TurnPhase.PLAYER_TURN)
-	
+	# deck_system.draw_draw_pile(Run.draw_cards_per_turn + ...)
 	end_player_turn()
 
 func end_player_turn():
@@ -114,9 +120,7 @@ func start_transition_of_turn():
 	else:
 		start_player_turn()
 
-func change_turn_phase(new_phase : TurnPhase):
-	current_phase = new_phase
-	turn_phase_changed.emit(new_phase)
+
 
 func end_battle():
 	
@@ -126,5 +130,13 @@ func end_battle():
 	
 	change_turn_phase(TurnPhase.END)
 
+#endregion
+
 func _on_turn_phase_changed(new_phase : TurnPhase):
 	print("Now Phase is ", new_phase)
+
+
+
+#region ALERT
+#func dra
+#endregion

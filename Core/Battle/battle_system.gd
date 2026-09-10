@@ -10,7 +10,7 @@ var turn_system := TurnSystem.new()
 func init_battle():
 	init_player()
 	enemy_system.init()
-	deck_system.init()
+	deck_system.init(battle_state)
 	turn_system.init(battle_state, enemy_system.enemy_state)
 
 func init_player():

@@ -7,3 +7,5 @@ const MAX_HAND_PILE = 5
 var draw_pile : Array = []
 var discard_pile : Array = []
 var hand_pile : Array = []
+
+var total_draw_cards_per_turn : int

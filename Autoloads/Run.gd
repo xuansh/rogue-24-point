@@ -4,6 +4,7 @@ var gold: int = 0
 
 var player_hp = 100
 var player_max_hp = 100
+var draw_cards_per_turn : int = 2
 
 var relics: Array = []
 
