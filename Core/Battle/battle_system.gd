@@ -10,8 +10,8 @@ var turn_system := TurnSystem.new()
 func init_battle():
 	init_player()
 	enemy_system.init()
-	deck_system.init(battle_state)
-	turn_system.init(battle_state, enemy_system.enemy_state)
+	deck_system.init(self)
+	turn_system.init(self, enemy_system, deck_system)
 
 func init_player():
 	battle_state.player_hp = Run.player_hp

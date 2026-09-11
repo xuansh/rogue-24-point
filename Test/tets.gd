@@ -13,5 +13,10 @@ func _ready() -> void:
 	
 	Run.init_run()
 	Run.opertor_deck_inventory.append(1)
+	Run.opertor_deck_inventory.append(1)
+	Run.opertor_deck_inventory.append(1)
+	Run.opertor_deck_inventory.append(1)
+	Run.opertor_deck_inventory.append(1)
+	Run.opertor_deck_inventory.append(1)
 	battle_system.enemy_system.enemy_state.enemies = [ed1]
 	battle_system.init_battle()

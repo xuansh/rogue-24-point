@@ -2,8 +2,10 @@ extends Node
 
 class_name TurnSystem
 
-var battle_state : BattleState
-var enemy_state : EnemyState
+var battle_system : BattleSystem
+var enemy_system : EnemySystem
+var deck_system : DeckSystem
+
 var current_phase : TurnPhase
 
 enum TurnPhase{
@@ -14,12 +16,11 @@ enum TurnPhase{
 	END				# 战斗结束 只有两种情况：玩家死亡 或者 敌人全部死亡
 }
 
-signal turn_phase_changed(new_phase : TurnPhase)
 
-func init(_battle_state : BattleState, _enemy_state: EnemyState) -> void:
-	self.battle_state = _battle_state
-	self.enemy_state = _enemy_state
-	self.turn_phase_changed.connect(_on_turn_phase_changed)
+func init(_battle_system : BattleSystem, _enemy_system: EnemySystem, _deck_system: DeckSystem) -> void:
+	self.battle_system = _battle_system
+	self.enemy_system = _enemy_system
+	self.deck_system = _deck_system
 	
 	#region TEST
 	print("Init Turn System: ")
@@ -30,7 +31,7 @@ func init(_battle_state : BattleState, _enemy_state: EnemyState) -> void:
 # 改变回合 并且发送信号
 func change_turn_phase(new_phase : TurnPhase):
 	current_phase = new_phase
-	turn_phase_changed.emit(new_phase)
+	SignalBus.turn_phase_changed.emit(new_phase)
 
 func start_battle():
 	
@@ -46,14 +47,19 @@ func start_battle():
 #region 战斗循环的逻辑
 func start_player_turn():
 	
-	battle_state.current_turn += 1
+	battle_system.battle_state.current_turn += 1
 	
 	#region TEST
 	print("Start Player Turn -> ")
 	#endregion
 	
 	change_turn_phase(TurnPhase.PLAYER_TURN)
-	# deck_system.draw_draw_pile(Run.draw_cards_per_turn + ...)
+	
+	deck_system.draw_draw_pile(Run.draw_cards_per_turn)
+	#region TEST
+	print("Deck PILE: ", deck_system.deck_state.draw_pile)
+	print("HAND PILE: ", deck_system.deck_state.hand_pile)
+	#endregion
 	end_player_turn()
 
 func end_player_turn():
@@ -69,8 +75,8 @@ func start_enemies_turn():
 	#region TEST
 	print("Start Enemies Turns -> ")
 	#endregion
-	
-	for i in range(enemy_state.enemies.size()):
+	var e_state = enemy_system.enemy_state
+	for i in range(e_state.enemies.size()):
 		start_enemy_turn(i)
 	
 	end_enemies_turn()
@@ -109,13 +115,14 @@ func end_enemies_turn():
 	start_transition_of_turn()
 
 func start_transition_of_turn():
+	var b_state = battle_system.battle_state
 	
 	#region TEST
-	print("Start Transition: ", "Now Turn is ", battle_state.current_turn)
+	print("Start Transition: ", "Now Turn is ", b_state.current_turn)
 	#endregion
 	
 	change_turn_phase(TurnPhase.TRANSITION)
-	if battle_state.current_turn == 2:
+	if b_state.current_turn == 1:
 		end_battle()
 	else:
 		start_player_turn()
