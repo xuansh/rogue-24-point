@@ -1,15 +1,8 @@
 [gd_scene format=3 uid="uid://dcja6c7mxhgee"]
 
-[sub_resource type="Gradient" id="Gradient_ix6vc"]
-offsets = PackedFloat32Array(0.31111112)
-colors = PackedColorArray(1, 0.5102555, 0.44386888, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_kldih"]
-gradient = SubResource("Gradient_ix6vc")
-fill_from = Vector2(0.41452992, 0.42307693)
+[ext_resource type="Script" uid="uid://bnbn6guj4axaa" path="res://Entities/cube_entity.gd" id="1_cube"]
 
 [node name="Player" type="Node2D" unique_id=71476137]
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=702028033]
-scale = Vector2(1, 1.90625)
-texture = SubResource("GradientTexture2D_kldih")
+script = ExtResource("1_cube")
+color = Color(0.12675977, 0.78129333, 0.66027606, 1)
+float_speed = 1.0

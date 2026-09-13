@@ -1,22 +1,91 @@
 [gd_scene format=3 uid="uid://bnnfdtex0dtpc"]
 
 [ext_resource type="Script" uid="uid://5l4o7kjjdxsx" path="res://Core/Battle/battle_system.gd" id="1_a02cp"]
-[ext_resource type="PackedScene" uid="uid://dcja6c7mxhgee" path="res://Entities/Player/player.tscn" id="2_go701"]
+[ext_resource type="Script" uid="uid://bbughx06wlvl8" path="res://Test/tets.gd" id="1_wha5p"]
+[ext_resource type="Script" uid="uid://de7ckkkbxonm" path="res://UI/HUD/TopBar/player_health_bar.gd" id="4_iv8cc"]
+[ext_resource type="PackedScene" uid="uid://bb8ojt8cge1tg" path="res://Test/BattleFieldTest/test.tscn" id="5_r1jk0"]
+[ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
+
+[sub_resource type="Gradient" id="Gradient_star"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.82, 0.76, 1, 0.55, 0.6, 0.5, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_star"]
+gradient = SubResource("Gradient_star")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.118, 0.098, 0.149, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_fill"]
+bg_color = Color(1, 0.51, 0.44, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enemy_fill"]
+bg_color = Color(0.11, 0.48, 0.42, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.11, 0.1, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.44, 0.35, 0.68, 0.45)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.55, 0.42, 0.95, 0.25)
+shadow_size = 10
 
 [node name="BattleField" type="Node" unique_id=1889322430]
+script = ExtResource("1_wha5p")
 
 [node name="BattleControl" type="Node" parent="." unique_id=731431274]
 
-[node name="BattleSystem" type="Node" parent="BattleControl" unique_id=1129309323]
+[node name="BattleSystem" type="Node" parent="BattleControl" unique_id=1129309323 node_paths=PackedStringArray("root")]
 script = ExtResource("1_a02cp")
+root = NodePath("../..")
 metadata/_custom_type_script = "uid://5l4o7kjjdxsx"
 
 [node name="Entities" type="Node2D" parent="." unique_id=1841467908]
 
-[node name="Player" parent="Entities" unique_id=71476137 instance=ExtResource("2_go701")]
-position = Vector2(215, 326)
+[node name="IsoFloor" type="Node2D" parent="Entities" unique_id=1293847112]
+script = ExtResource("6_floor")
 
 [node name="EnemiesContainer" type="Node2D" parent="Entities" unique_id=1407132584]
+
+[node name="Starlight" type="CPUParticles2D" parent="Entities" unique_id=1882045913]
+z_index = 2
+position = Vector2(512, 300)
+amount = 80
+texture = SubResource("GradientTexture2D_star")
+lifetime = 7.0
+preprocess = 3.0
+emission_shape = 3
+emission_rect_extents = Vector2(580, 340)
+direction = Vector2(0, -1)
+gravity = Vector2(0, -6)
+initial_velocity_min = 2.0
+initial_velocity_max = 12.0
+scale_amount_min = 0.12
+scale_amount_max = 0.45
+color = Color(0.84, 0.78, 1, 0.45)
 
 [node name="BattleUI" type="CanvasLayer" parent="." unique_id=1978403320]
 
@@ -43,11 +112,15 @@ theme_override_constants/separation = 16
 [node name="PlayerHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=143040650]
 custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
-value = 100.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_player_fill")
+max_value = 1.0
+script = ExtResource("4_iv8cc")
 
 [node name="TurnLabel" type="Label" parent="BattleUI/HUD/TopBar" unique_id=2074854699]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
 text = "Turn 1"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -55,46 +128,9 @@ vertical_alignment = 1
 [node name="EnemyHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=303825936]
 custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_enemy_fill")
 value = 100.0
-
-[node name="PuzzlePanel" type="Control" parent="BattleUI" unique_id=1713084573]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -160.0
-offset_right = 280.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ExpressionDisplay" type="Label" parent="BattleUI/PuzzlePanel" unique_id=84171612]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 8.0
-offset_right = -8.0
-offset_bottom = 56.0
-grow_horizontal = 2
-text = "3 + 5 × 2 = ?"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Blocks" type="HBoxContainer" parent="BattleUI/PuzzlePanel" unique_id=62884050]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -88.0
-offset_bottom = -16.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 12
-alignment = 1
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
 layout_mode = 3
@@ -123,18 +159,22 @@ alignment = 1
 [node name="Slot1" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=787992581]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
 [node name="Slot2" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=1259087992]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
 [node name="Slot3" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=205044562]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
 [node name="Slot4" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=2112689732]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
 [node name="Hand" type="Control" parent="BattleUI" unique_id=476706719]
 layout_mode = 3
@@ -184,8 +224,14 @@ alignment = 2
 
 [node name="DrawPileLabel" type="Label" parent="BattleUI/DeckInfo/VBoxContainer" unique_id=762319702]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
 text = "Draw: 10"
 
 [node name="DiscardPileLabel" type="Label" parent="BattleUI/DeckInfo/VBoxContainer" unique_id=2073929133]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
 text = "Discard: 0"
+
+[node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]
+visible = false
+BattleField = NodePath("../..")

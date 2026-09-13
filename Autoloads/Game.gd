@@ -21,12 +21,4 @@ func change_state(new_state : GameState):
 	
 	var old_state := state
 	state = new_state
-	
-	#TEST
-	print(
-		"GAME STATE: ",
-		GameState.keys()[old_state],
-		' -> ',
-		GameState.keys()[state]
-	)
 	state_changed.emit(old_state, new_state)

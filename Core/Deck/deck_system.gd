@@ -14,17 +14,6 @@ func init(_battle_system: BattleSystem):
 	deck_state.discard_pile = []
 	
 	init_draw_pile()
-	
-	#TEST
-	print(
-		"Init Deck: ",
-		"Draw Pile: ",
-		deck_state.draw_pile,
-		", Discard Pile: ",
-		deck_state.discard_pile,
-		", Hand Pile: ",
-		deck_state.hand_pile
-	)
 
 func init_draw_pile():
 	## 将抽牌堆设置成玩家的所有卡牌
@@ -39,8 +28,3 @@ func draw_draw_pile(count : int):
 		var index = randi_range(0, deck_state.draw_pile.size() - 1)
 		var card = deck_state.draw_pile.pop_at(index)
 		deck_state.hand_pile.append(card)
-		
-		#region TEST
-		print("Draw Card: ", card)
-		#endregion
-	

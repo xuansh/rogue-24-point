@@ -1,4 +1,4 @@
-extends RefCounted
+extends Resource
 
 class_name EnemyData
 
@@ -7,6 +7,7 @@ enum Behavior{
 	DEFENCE,
 }
 
-var hp : int
-var max_hp : int
-var current_behavior : Behavior
+@export var hp : int
+@export var max_hp : int
+@export var current_behavior : Behavior
+@export var enemy_packed_scene : PackedScene

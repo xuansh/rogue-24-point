@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://258vienka1th"]
+
+[ext_resource type="Script" uid="uid://4al802weun64" path="res://Data/Enemies/enemy_data.gd" id="1_1cyjh"]
+[ext_resource type="PackedScene" uid="uid://5ds13b152kef" path="res://Entities/Enemy/slime.tscn" id="1_3fda8"]
+
+[resource]
+script = ExtResource("1_1cyjh")
+hp = 10
+enemy_packed_scene = ExtResource("1_3fda8")
+metadata/_custom_type_script = "uid://4al802weun64"

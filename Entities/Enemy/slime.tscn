@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://5ds13b152kef"]
+
+[ext_resource type="Script" uid="uid://bnbn6guj4axaa" path="res://Entities/cube_entity.gd" id="1_cube"]
+
+[node name="Enemy" type="Node2D" unique_id=1374373860]
+script = ExtResource("1_cube")
+color = Color(0.98177, 0.5221423, 0.46930808, 1)
