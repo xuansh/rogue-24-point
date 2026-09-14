@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://bh3ck3b4tun6q"]
+[gd_scene format=3 uid="uid://bmqpf3yqko8vr"]
 
-[node name="EnterPlayerTurnButton" type="Button" unique_id=1591442706]
+[node name="EnterEnemiesTurnButton" type="Button" unique_id=1591442706]
 custom_minimum_size = Vector2(100, 50)
 offset_right = 69.0
 offset_bottom = 48.0
@@ -20,6 +20,6 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(20, 12)
 theme_override_font_sizes/font_size = 7
-text = "Enter Player Turn"
+text = "Enter Enemies Turn"
 horizontal_alignment = 1
 vertical_alignment = 1

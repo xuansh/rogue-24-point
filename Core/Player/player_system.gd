@@ -1,6 +1,8 @@
 extends Node
 
 class_name PlayerSystem
+@warning_ignore_start("unused_parameter")
+@warning_ignore_start("unused_variable")
 
 var player_state : PlayerState:
 	get:

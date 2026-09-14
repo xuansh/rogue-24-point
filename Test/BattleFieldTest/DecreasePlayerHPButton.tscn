@@ -1,14 +1,9 @@
 [gd_scene format=3 uid="uid://c06rm0ku5m0sp"]
 
-[sub_resource type="GDScript" id="GDScript_srpuc"]
-script/source = "extends Button
-"
-
 [node name="Button" type="Button" unique_id=1591442706]
 custom_minimum_size = Vector2(100, 50)
 offset_right = 69.0
 offset_bottom = 48.0
-script = SubResource("GDScript_srpuc")
 
 [node name="Label" type="Label" parent="." unique_id=1398021962]
 layout_mode = 1

@@ -9,7 +9,15 @@ signal player_turn_started(payload : PlayerTurnStartedPayload)
 
 class PlayerTurnExitedPayload extends RefCounted:
 	pass
-signal player_turn_exited(payload : PlayerTurnExitedPayload)
+signal player_turn_exited(payload : PlayerTurnExitedPayload) 
+
+class EnemyTurnStartedPayload extends RefCounted:
+	var _enemy_state : EnemyState
+signal enemy_turn_started(payload : EnemyTurnStartedPayload)
+
+class EnemyTurnExitedPayload extends RefCounted:
+	var _enemy_state : EnemyState
+signal enemy_turn_exited(payload : EnemyTurnExitedPayload)
 #endregion
 
 #region BattleSystem

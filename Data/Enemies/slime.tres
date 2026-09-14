@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_1cyjh")
 hp = 10
+max_hp = 10
 enemy_packed_scene = ExtResource("1_3fda8")
 metadata/_custom_type_script = "uid://4al802weun64"

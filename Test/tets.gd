@@ -5,12 +5,8 @@ extends Node
 var slime_tres : Resource = load("res://Data/Enemies/slime.tres")
 
 func _ready() -> void:
-	var ed1 = EnemyData.new()
-	ed1 = slime_tres
-	
-	var ed2 = EnemyData.new()
-	ed2.hp = 20
-	ed2.max_hp = 20
+	var e_state1 := EnemyState.new()
+	e_state1.enemy_data = slime_tres
 	
 	battle_system.player_system.reset()
 	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
@@ -19,5 +15,5 @@ func _ready() -> void:
 	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
 	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
 	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.enemy_system.enemy_state.enemies = [ed1]
+	battle_system.enemy_system.enemies_state.append(e_state1)
 	battle_system.init_battle()

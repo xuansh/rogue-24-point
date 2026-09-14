@@ -57,17 +57,24 @@ func end_player_turn():
 	start_enemies_turn()
 
 func start_enemies_turn():
-	var e_state = enemy_system.enemy_state
-	for i in range(e_state.enemies.size()):
+	var enemies_state = enemy_system.enemies_state
+	for i in range(enemies_state.size()):
 		start_enemy_turn(i)
 	
 	end_enemies_turn()
 
 func start_enemy_turn(index : int):
+	var e_state : EnemyState = enemy_system.enemies_state[index]
+	var payload := SignalBus.EnemyTurnStartedPayload.new()
+	payload._enemy_state = e_state
+	SignalBus.enemy_turn_started.emit(payload)
 	change_turn_phase(TurnPhase.ENEMY_TURN)
 
 func end_enemy_turn(index : int):
-	pass
+	var e_state : EnemyState = enemy_system.enemies_state[index]
+	var payload := SignalBus.EnemyTurnExitedPayload.new()
+	payload._enemy_state = e_state
+	SignalBus.enemy_turn_exited.emit(payload)
 	
 func end_enemies_turn():
 	start_transition_of_turn()
