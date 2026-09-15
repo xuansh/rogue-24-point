@@ -35,3 +35,9 @@ class PlayerHPChangedPayload extends RefCounted:
 signal player_hp_changed(payload : PlayerHPChangedPayload)
 
 #endregion
+
+#region BlockSystem
+class PileDrawStartedPayload extends RefCounted:
+	var block_class_name : String
+signal pile_draw_started(payload : PileDrawStartedPayload)
+#endregion

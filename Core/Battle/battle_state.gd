@@ -9,7 +9,7 @@ enum BattleResult{
 
 var player_hp : int
 var player_max_hp : int
-var deck_inventory : Array = []
+var deck_inventory : Array[Block] = []
 var extra_cards_per_turn : int = 0
 
 var current_turn : int = 0

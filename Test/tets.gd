@@ -7,13 +7,11 @@ var slime_tres : Resource = load("res://Data/Enemies/slime.tres")
 func _ready() -> void:
 	var e_state1 := EnemyState.new()
 	e_state1.enemy_data = slime_tres
+	var block := OperatorBlock.new()
 	
 	battle_system.player_system.reset()
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
-	battle_system.player_system.player_state.opertor_deck_inventory.append(1)
+	for i in range(6):
+		battle_system.player_system.player_state.opertor_deck_inventory.append(block)
+	
 	battle_system.enemy_system.enemies_state.append(e_state1)
 	battle_system.init_battle()

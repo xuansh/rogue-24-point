@@ -27,4 +27,7 @@ func draw_draw_pile(count : int):
 	for i in range(count):
 		var index = randi_range(0, deck_state.draw_pile.size() - 1)
 		var card = deck_state.draw_pile.pop_at(index)
+		var payload := SignalBus.PileDrawStartedPayload.new()
+		payload.block_class_name = "OperatorBlock"
+		SignalBus.pile_draw_started.emit(payload)
 		deck_state.hand_pile.append(card)

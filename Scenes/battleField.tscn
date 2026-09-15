@@ -96,7 +96,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
 [node name="TopBar" type="HBoxContainer" parent="BattleUI/HUD" unique_id=1316034524]
 layout_mode = 1
@@ -140,9 +139,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -200.0
-offset_top = -240.0
+offset_top = -592.0
 offset_right = 200.0
-offset_bottom = -176.0
+offset_bottom = -528.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -188,15 +187,19 @@ offset_right = -170.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="CardContainer" type="HBoxContainer" parent="BattleUI/Hand" unique_id=1302173009]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 16.0
+offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+mouse_filter = 2
+theme_override_constants/separation = 156
 alignment = 1
 
 [node name="DeckInfo" type="Control" parent="BattleUI" unique_id=1756267846]
@@ -234,4 +237,5 @@ text = "Discard: 0"
 
 [node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]
 visible = false
+mouse_filter = 2
 BattleField = NodePath("../..")
