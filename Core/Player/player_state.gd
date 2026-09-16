@@ -17,5 +17,5 @@ var float_amplitude : float = 0.0:
 	set(value):
 		player_node.float_amplitude = value
 
-var player_packed_scene : PackedScene = preload("res://Entities/Player/player.tscn")
+const player_packed_scene : PackedScene = preload("res://Entities/Player/player.tscn")
 var player_node : Node2D = self.player_packed_scene.instantiate()

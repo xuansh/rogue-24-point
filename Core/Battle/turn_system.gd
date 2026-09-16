@@ -18,12 +18,13 @@ enum TurnPhase{
 }
 
 
-func init(_battle_system : BattleSystem, _enemy_system: EnemySystem, _deck_system: DeckSystem, _player_system) -> void:
+func init(_battle_system : BattleSystem) -> void:
 	self.battle_system = _battle_system
-	self.enemy_system = _enemy_system
-	self.deck_system = _deck_system
-	self.player_system = _player_system
-
+	self.enemy_system = _battle_system.enemy_system
+	self.deck_system = _battle_system.deck_system
+	self.player_system = _battle_system.player_system
+	
+	self.battle_system.end_button.pressed.connect(end_player_turn)
 	start_battle()
 
 ## 改变回合 
