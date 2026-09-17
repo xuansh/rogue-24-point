@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bbughx06wlvl8" path="res://Test/tets.gd" id="1_wha5p"]
 [ext_resource type="Script" uid="uid://de7ckkkbxonm" path="res://UI/HUD/TopBar/player_health_bar.gd" id="4_iv8cc"]
 [ext_resource type="PackedScene" uid="uid://bb8ojt8cge1tg" path="res://Test/BattleFieldTest/test.tscn" id="5_r1jk0"]
+[ext_resource type="PackedScene" uid="uid://dvshky67sofbj" path="res://UI/Buffer/Slot/slot.tscn" id="5_ucgk7"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
 
 [sub_resource type="Gradient" id="Gradient_star"]
@@ -38,20 +39,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
-bg_color = Color(0.11, 0.1, 0.13, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.44, 0.35, 0.68, 0.45)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-shadow_color = Color(0.55, 0.42, 0.95, 0.25)
-shadow_size = 10
 
 [node name="BattleField" type="Node" unique_id=1889322430]
 script = ExtResource("1_wha5p")
@@ -145,6 +132,7 @@ offset_right = 200.0
 offset_bottom = -528.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="Slots" type="HBoxContainer" parent="BattleUI/Buffer" unique_id=135597172]
 layout_mode = 1
@@ -153,28 +141,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Slot1" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=787992581]
-custom_minimum_size = Vector2(64, 64)
+[node name="Slot1" parent="BattleUI/Buffer/Slots" unique_id=696085654 instance=ExtResource("5_ucgk7")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
-[node name="Slot2" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=1259087992]
-custom_minimum_size = Vector2(64, 64)
+[node name="Slot2" parent="BattleUI/Buffer/Slots" unique_id=1506046191 instance=ExtResource("5_ucgk7")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
-[node name="Slot3" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=205044562]
-custom_minimum_size = Vector2(64, 64)
+[node name="Slot3" parent="BattleUI/Buffer/Slots" unique_id=500238620 instance=ExtResource("5_ucgk7")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
-[node name="Slot4" type="Panel" parent="BattleUI/Buffer/Slots" unique_id=2112689732]
-custom_minimum_size = Vector2(64, 64)
+[node name="Slot4" parent="BattleUI/Buffer/Slots" unique_id=89751762 instance=ExtResource("5_ucgk7")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 
 [node name="Hand" type="Control" parent="BattleUI" unique_id=476706719]
 layout_mode = 3

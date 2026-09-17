@@ -31,7 +31,7 @@ anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_qphgo")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=2103194165 groups=["OperatorArea"]]
+[node name="Area2D" type="Area2D" parent="." unique_id=2103194165]
 monitoring = false
 
 [node name="Shadow" type="Panel" parent="Area2D" unique_id=1556374744]
@@ -53,7 +53,7 @@ pivot_offset = Vector2(60, 60)
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_8qs34")
 
-[node name="Operand_A" type="Area2D" parent="Area2D/OperatorBlock" unique_id=1731434944 groups=["OperandArea"]]
+[node name="Operand_A" type="Area2D" parent="Area2D/OperatorBlock" unique_id=1731434944]
 position = Vector2(28, 92)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/OperatorBlock/Operand_A" unique_id=353888619]
@@ -67,7 +67,7 @@ offset_bottom = 20.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ufdj0")
 
-[node name="Operand_B" type="Area2D" parent="Area2D/OperatorBlock" unique_id=227661052 groups=["OperandArea"]]
+[node name="Operand_B" type="Area2D" parent="Area2D/OperatorBlock" unique_id=227661052 groups=["HandOperatorBlockOperandArea"]]
 position = Vector2(92, 92)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/OperatorBlock/Operand_B" unique_id=1064593297]

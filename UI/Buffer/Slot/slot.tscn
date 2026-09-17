@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dvshky67sofbj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.11, 0.1, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.44, 0.35, 0.68, 0.45)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.55, 0.42, 0.95, 0.25)
+shadow_size = 10
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kldih"]
+size = Vector2(64, 64)
+
+[node name="Slot1" type="Panel" unique_id=696085654]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1142582205 groups=["BufferSlotArea"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1303860609]
+position = Vector2(32, 32)
+shape = SubResource("RectangleShape2D_kldih")

@@ -23,6 +23,8 @@ func init_battle():
 	turn_system.init(self)
 	block_system.init(self)
 	buffer_system.init(self)
+	
+	turn_system.start_battle()
 
 func init():
 	card_container = root.get_node("BattleUI").get_node("Hand").get_node("CardContainer")

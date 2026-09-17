@@ -41,3 +41,9 @@ class PileDrawStartedPayload extends RefCounted:
 	var block_class_name : String
 signal pile_draw_started(payload : PileDrawStartedPayload)
 #endregion
+
+#region BufferSystem
+class NumberBlockInSlotsPopedPayload extends RefCounted:
+	pass
+signal number_block_in_slots_poped(payload : NumberBlockInSlotsPopedPayload)
+#endregion

@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cxqvbxwc4eu0y"]
 
+[ext_resource type="Script" uid="uid://0wtsaqjv1hxr" path="res://Entities/Blocks/NumberBlock/number_block.gd" id="1_ghuyv"]
 [ext_resource type="StyleBox" uid="uid://b3kb132twp4qr" path="res://Data/Blocks/NumberBlock.tres" id="1_lnb0y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5aov"]
@@ -14,6 +15,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ghuyv")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=564686255 groups=["NumberArea"]]
 z_index = 1
