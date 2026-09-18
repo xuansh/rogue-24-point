@@ -43,7 +43,11 @@ signal pile_draw_started(payload : PileDrawStartedPayload)
 #endregion
 
 #region BufferSystem
-class NumberBlockInSlotsPopedPayload extends RefCounted:
-	pass
-signal number_block_in_slots_poped(payload : NumberBlockInSlotsPopedPayload)
+class NumberBlockInBufferPopedPayload extends RefCounted:
+	var poped_number_block : NumberBlock
+signal number_block_in_buffer_poped(payload : NumberBlockInBufferPopedPayload)
+
+class FrontNumberBlockInBufferPopedPayload extends RefCounted:
+	var poped_number_block : NumberBlock
+signal front_number_block_in_buffer_poped(payload : FrontNumberBlockInBufferPopedPayload)
 #endregion

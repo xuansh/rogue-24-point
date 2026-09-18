@@ -35,7 +35,6 @@ func _process(delta: float) -> void:
 
 func _on_area_2d_area_entered(area: Area2D):
 	if area.is_in_group("HandOperatorBlockOperandArea"):
-		var payload := SignalBus.NumberBlockInSlotsPopedPayload.new()
-		SignalBus.number_block_in_slots_poped.emit(payload)
-		self.queue_free()
-		
+		var payload := SignalBus.NumberBlockInBufferPopedPayload.new()
+		payload.poped_number_block = self
+		SignalBus.number_block_in_buffer_poped.emit(payload)

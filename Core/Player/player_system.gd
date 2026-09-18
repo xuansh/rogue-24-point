@@ -26,7 +26,7 @@ func decrease_hp(num : int):
 	var payload = SignalBus.PlayerHPChangedPayload.new()
 	payload.player_hp = player_state.player_hp
 	payload.player_max_hp = player_state.player_max_hp
-	SignalBus.battle_field_inited.emit(payload)
+	SignalBus.player_hp_changed.emit(payload)
 	
 	#region TEST
 	print("HP is decreased, now hp is ", player_state.player_hp)
@@ -55,3 +55,10 @@ func init(battle_system : BattleSystem):
 		func(payload : SignalBus.PlayerTurnExitedPayload):
 			player_state.float_amplitude = 0
 	)
+	
+	# 敌人把方块挤出 buffer(溢出)时触发 拖到手牌不算
+	SignalBus.front_number_block_in_buffer_poped.connect(_on_front_number_block_poped)
+
+## 被挤出去的方块 按其面值对玩家造成伤害 想改成固定伤害就改这一行
+func _on_front_number_block_poped(payload : SignalBus.FrontNumberBlockInBufferPopedPayload):
+	decrease_hp(payload.poped_number_block.value)
