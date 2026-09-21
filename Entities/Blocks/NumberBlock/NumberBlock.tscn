@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ghuyv")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=564686255 groups=["NumberArea"]]
+[node name="Area2D" type="Area2D" parent="." unique_id=564686255]
 z_index = 1
 
 [node name="Shadow" type="Panel" parent="Area2D" unique_id=548871166]

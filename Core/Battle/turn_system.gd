@@ -84,7 +84,7 @@ func start_transition_of_turn():
 	var b_state = battle_system.battle_state
 	
 	change_turn_phase(TurnPhase.TRANSITION)
-	if b_state.current_turn >= 1:
+	if b_state.current_turn >= 8:
 		end_battle()
 	else:
 		start_player_turn()

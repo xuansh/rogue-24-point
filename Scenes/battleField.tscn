@@ -3,12 +3,14 @@
 [ext_resource type="Script" uid="uid://5l4o7kjjdxsx" path="res://Core/Battle/battle_system.gd" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://bbughx06wlvl8" path="res://Test/tets.gd" id="1_wha5p"]
 [ext_resource type="Script" uid="uid://de7ckkkbxonm" path="res://UI/HUD/TopBar/player_health_bar.gd" id="4_iv8cc"]
+[ext_resource type="Script" uid="uid://bvql6ke28vqhk" path="res://UI/HUD/TopBar/enemy_health_bar.gd" id="5_2qemg"]
 [ext_resource type="PackedScene" uid="uid://bb8ojt8cge1tg" path="res://Test/BattleFieldTest/test.tscn" id="5_r1jk0"]
 [ext_resource type="PackedScene" uid="uid://dvshky67sofbj" path="res://UI/Buffer/Slot/slot.tscn" id="5_ucgk7"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
 
 [sub_resource type="Gradient" id="Gradient_star"]
-offsets = PackedFloat32Array(0, 0.35, 1)
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.7527675, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.82, 0.76, 1, 0.55, 0.6, 0.5, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_star"]
@@ -16,7 +18,7 @@ gradient = SubResource("Gradient_star")
 width = 16
 height = 16
 fill = 1
-fill_from = Vector2(0.5, 0.5)
+fill_from = Vector2(0.517094, 0.508547)
 fill_to = Vector2(1, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
@@ -117,7 +119,8 @@ custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_enemy_fill")
-value = 100.0
+max_value = 1.0
+script = ExtResource("5_2qemg")
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
 layout_mode = 3

@@ -9,14 +9,14 @@ var block_system : BlockSystem
 func init(_battle_system : BattleSystem):
 	self.battle_system = _battle_system
 	self.block_system = _battle_system.block_system
-	SignalBus.number_block_in_buffer_poped.connect(resort_number_blocks_in_slots)
-	SignalBus.number_block_in_buffer_poped.connect(_on_block_poped_from_buffer)
+	SignalBus.number_block_removal_requested.connect(resort_number_blocks_in_slots)
+	SignalBus.number_block_removal_requested.connect(_on_block_poped_from_buffer)
 
 func spawn_number_block_in_buffer(value : int):
 	var slots_root = self.battle_system.buffer_slots
 
 	# 满了 就弹出最前面的方块
-	# 弹出走 number_block_in_buffer_poped 信号 由 resort_number_blocks_in_slots 统一处理
+	# 弹出走 number_block_removal_requested 信号 由 resort_number_blocks_in_slots 统一处理
 	# 该处理是同步的 所以下面立刻就能拿到空出来的槽位
 	if _get_first_free_slot(slots_root) == null:
 		_pop_front_number_block()
@@ -31,8 +31,8 @@ func spawn_number_block_in_buffer(value : int):
 	_snap_block_to_slot(node)
 	self.buffer_state.number_block_nodes.append(node)
 
-func resort_number_blocks_in_slots(payload : SignalBus.NumberBlockInBufferPopedPayload):
-	var block := payload.poped_number_block
+func resort_number_blocks_in_slots(payload : SignalBus.NumberBlockRemovalRequestedPayload):
+	var block := payload.removal_requested_number_block
 	if block.get_parent() != null:
 		block.get_parent().remove_child(block)
 	_forget_block(block)
@@ -44,13 +44,13 @@ func _pop_front_number_block():
 	if block == null:
 		return
 	
-	var payload1 := SignalBus.NumberBlockInBufferPopedPayload.new()
-	payload1.poped_number_block = block
-	SignalBus.number_block_in_buffer_poped.emit(payload1)
+	var payload1 := SignalBus.NumberBlockRemovalRequestedPayload.new()
+	payload1.removal_requested_number_block = block
+	SignalBus.number_block_removal_requested.emit(payload1)
 	
-	var payload2 := SignalBus.FrontNumberBlockInBufferPopedPayload.new()
-	payload2.poped_number_block = block
-	SignalBus.front_number_block_in_buffer_poped.emit(payload2)
+	var payload2 := SignalBus.BufferOverflowedPayload.new()
+	payload2.removal_requested_number_block = block
+	SignalBus.buffer_overflowed.emit(payload2)
 
 ## 把所有方块按顺序压到最前面的槽位 空槽留在最后
 func _compact_slots():
@@ -87,5 +87,5 @@ func _snap_block_to_slot(block : NumberBlock):
 func _forget_block(block : NumberBlock):
 	self.buffer_state.number_block_nodes.erase(block)
 
-func _on_block_poped_from_buffer(payload : SignalBus.NumberBlockInBufferPopedPayload):
-	print(payload.poped_number_block.value)
+func _on_block_poped_from_buffer(payload : SignalBus.NumberBlockRemovalRequestedPayload):
+	print(payload.removal_requested_number_block.value)

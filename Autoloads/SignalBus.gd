@@ -24,6 +24,8 @@ signal enemy_turn_exited(payload : EnemyTurnExitedPayload)
 class BattleFieldInitedPayload extends RefCounted:
 	var player_hp : int
 	var player_max_hp : int
+	var enemy_hp : int
+	var enemy_max_hp : int
 signal battle_field_inited(payload : BattleFieldInitedPayload)
 
 #endregion
@@ -36,6 +38,13 @@ signal player_hp_changed(payload : PlayerHPChangedPayload)
 
 #endregion
 
+#region EnemySystem
+class EnemyHPChangedPayload extends RefCounted:
+	var enemy_hp : int
+	var enemy_max_hp : int
+signal enemy_hp_changed(payload : EnemyHPChangedPayload)
+#endregion
+
 #region BlockSystem
 class PileDrawStartedPayload extends RefCounted:
 	var block_class_name : String
@@ -43,11 +52,29 @@ signal pile_draw_started(payload : PileDrawStartedPayload)
 #endregion
 
 #region BufferSystem
-class NumberBlockInBufferPopedPayload extends RefCounted:
-	var poped_number_block : NumberBlock
-signal number_block_in_buffer_poped(payload : NumberBlockInBufferPopedPayload)
+class NumberBlockRemovalRequestedPayload extends RefCounted:
+	var removal_requested_number_block : NumberBlock
+signal number_block_removal_requested(payload : NumberBlockRemovalRequestedPayload)
 
-class FrontNumberBlockInBufferPopedPayload extends RefCounted:
-	var poped_number_block : NumberBlock
-signal front_number_block_in_buffer_poped(payload : FrontNumberBlockInBufferPopedPayload)
+class BufferOverflowedPayload extends RefCounted:
+	var removal_requested_number_block : NumberBlock
+signal buffer_overflowed(payload : BufferOverflowedPayload)
+#endregion
+
+#region DeckSystem
+class OperandFilledPayload extends RefCounted:
+	var operator_block : OperatorBlock
+	var operand_index : int
+	var number_block_value : int
+signal operand_filled(payload : OperandFilledPayload)
+
+class OperatorBlockDroppedPayload extends RefCounted:
+	var calculate_result : int
+	var operator_block : OperatorBlock
+signal operator_block_dropped(payload : OperatorBlockDroppedPayload)
+
+class OperatorBlockRemovalRequestedPayload extends RefCounted:
+	var calculate_result : int
+	var operator_block : OperatorBlock
+signal operator_block_removal_requested(payload : OperatorBlockRemovalRequestedPayload)
 #endregion

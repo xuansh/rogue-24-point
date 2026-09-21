@@ -53,7 +53,7 @@ pivot_offset = Vector2(60, 60)
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_8qs34")
 
-[node name="Operand_A" type="Area2D" parent="Area2D/OperatorBlock" unique_id=1731434944]
+[node name="Operand_A" type="Area2D" parent="Area2D/OperatorBlock" unique_id=1731434944 groups=["HandOperatorBlockOperandArea"]]
 position = Vector2(28, 92)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/OperatorBlock/Operand_A" unique_id=353888619]

@@ -37,12 +37,8 @@ func init(battle_system : BattleSystem):
 	battle_state.player_hp = self.player_state.player_hp
 	battle_state.player_max_hp = self.player_state.player_max_hp
 	battle_state.deck_inventory = self.player_state.opertor_deck_inventory
-	
-	var payload := SignalBus.BattleFieldInitedPayload.new()
-	payload.player_hp = battle_state.player_hp
-	payload.player_max_hp = battle_state.player_max_hp
-	SignalBus.battle_field_inited.emit(payload)
-	
+
+	# battle_field_inited 由 BattleSystem 在所有子系统初始化完之后统一发射
 	battle_system.root.get_node("Entities").add_child(player_state.player_node)
 	player_state.player_node.position = IsoFloor.ANCHOR
 	
@@ -57,8 +53,8 @@ func init(battle_system : BattleSystem):
 	)
 	
 	# 敌人把方块挤出 buffer(溢出)时触发 拖到手牌不算
-	SignalBus.front_number_block_in_buffer_poped.connect(_on_front_number_block_poped)
+	SignalBus.buffer_overflowed.connect(_on_front_number_block_poped)
 
 ## 被挤出去的方块 按其面值对玩家造成伤害 想改成固定伤害就改这一行
-func _on_front_number_block_poped(payload : SignalBus.FrontNumberBlockInBufferPopedPayload):
-	decrease_hp(payload.poped_number_block.value)
+func _on_front_number_block_poped(payload : SignalBus.BufferOverflowedPayload):
+	decrease_hp(payload.removal_requested_number_block.value)

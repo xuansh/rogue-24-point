@@ -13,7 +13,7 @@ config_version=5
 config/name="rogue-24-point"
 run/main_scene="uid://bnnfdtex0dtpc"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://bk5qc8eusjfcx"
 
 [autoload]
 
@@ -27,8 +27,9 @@ gdscript/stdout/verbose_stdout=false
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/size/initial_position_type=0
+window/hdr/request_hdr_output=true
+window/stretch/mode="viewport"
 
 [file_customization]
 
@@ -64,7 +65,9 @@ Mouse-Left={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+common/physics_interpolation=true
 
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+viewport/hdr_2d=true

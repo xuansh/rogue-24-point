@@ -7,11 +7,14 @@ var battle_system : BattleSystem
 
 ## 绝大多数是被init_battle() 里调用
 func init(_battle_system: BattleSystem):
+	
 	self.battle_system = _battle_system
 
 	deck_state.draw_pile = []
 	deck_state.hand_pile = []
 	deck_state.discard_pile = []
+	
+	SignalBus.operator_block_dropped.connect(remove_pile)
 	
 	init_draw_pile()
 
@@ -31,3 +34,10 @@ func draw_draw_pile(count : int):
 		payload.block_class_name = "OperatorBlock"
 		SignalBus.pile_draw_started.emit(payload)
 		deck_state.hand_pile.append(card)
+
+func remove_pile(payload : SignalBus.OperatorBlockRemovalRequestedPayload):
+	payload.operator_block.queue_free()
+	var dropped_payload := SignalBus.OperatorBlockDroppedPayload.new()
+	dropped_payload.calculate_result = payload.calculate_result
+	dropped_payload.operator_block = payload.operator_block
+	SignalBus.operator_block_dropped.emit(dropped_payload)
