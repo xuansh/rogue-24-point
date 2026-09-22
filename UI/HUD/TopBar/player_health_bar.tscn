@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://dkrn0h5ucudys"]
+
+[ext_resource type="Texture2D" uid="uid://d4gvr857df84p" path="res://Assets/Textures/coins-chests-etc-2-0.png" id="1_abr0c"]
+[ext_resource type="Script" uid="uid://de7ckkkbxonm" path="res://UI/HUD/TopBar/player_health_bar.gd" id="2_ffkbb"]
+[ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="2_rcwus"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iabn7"]
+bg_color = Color(0.067775145, 0.0677024, 0.13524693, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0179419, 0.01793592, 0.050395004, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 2
+shadow_size = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kldih"]
+atlas = ExtResource("1_abr0c")
+region = Rect2(320, 192, 16, 16)
+margin = Rect2(1.5, 0, 3, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abr0c"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.06404449, 0.1224461, 0.034290783, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15775919, 0.27745363, 0.1012071, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6qw"]
+bg_color = Color(0.36078432, 0.56078434, 0.25882354, 1)
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.61615366, 0.8907356, 0.49759567, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_rcwus"]
+font = ExtResource("2_rcwus")
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0.676, 1.004)
+stacked_outline_count = 1
+
+[node name="PlayerHealthBar" type="Control" unique_id=1826464490]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Panel" type="Panel" parent="." unique_id=903404389]
+z_index = -1
+layout_mode = 0
+offset_right = 249.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_iabn7")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1816714609]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 44.0
+offset_bottom = 40.0
+pivot_offset = Vector2(20, 20)
+texture = SubResource("AtlasTexture_kldih")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=969441571]
+z_index = -1
+layout_mode = 0
+offset_left = 25.0
+offset_top = 19.0
+offset_right = 239.0
+offset_bottom = 29.0
+pivot_offset = Vector2(0, 5)
+theme_override_styles/background = SubResource("StyleBoxFlat_abr0c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ow6qw")
+step = 1.0
+value = 82.0
+show_percentage = false
+script = ExtResource("2_ffkbb")
+
+[node name="Label" type="Label" parent="ProgressBar" unique_id=530194179]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -10.0
+offset_right = 86.0
+offset_bottom = 6.0
+pivot_offset = Vector2(0, 14)
+text = "100/100"
+label_settings = SubResource("LabelSettings_rcwus")

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://5l4o7kjjdxsx" path="res://Core/Battle/battle_system.gd" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://bbughx06wlvl8" path="res://Test/tets.gd" id="1_wha5p"]
-[ext_resource type="Script" uid="uid://de7ckkkbxonm" path="res://UI/HUD/TopBar/player_health_bar.gd" id="4_iv8cc"]
-[ext_resource type="Script" uid="uid://bvql6ke28vqhk" path="res://UI/HUD/TopBar/enemy_health_bar.gd" id="5_2qemg"]
+[ext_resource type="PackedScene" uid="uid://dkrn0h5ucudys" path="res://UI/HUD/TopBar/player_health_bar.tscn" id="4_2qemg"]
+[ext_resource type="PackedScene" uid="uid://b0ngbljyl1tc4" path="res://UI/HUD/TopBar/enemy_health_bar.tscn" id="5_2qemg"]
 [ext_resource type="PackedScene" uid="uid://bb8ojt8cge1tg" path="res://Test/BattleFieldTest/test.tscn" id="5_r1jk0"]
 [ext_resource type="PackedScene" uid="uid://dvshky67sofbj" path="res://UI/Buffer/Slot/slot.tscn" id="5_ucgk7"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
@@ -20,31 +20,6 @@ height = 16
 fill = 1
 fill_from = Vector2(0.517094, 0.508547)
 fill_to = Vector2(1, 0.5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(0.067, 0.055, 0.09, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_fill"]
-bg_color = Color(0.13, 0.78, 0.66, 1)
-border_width_top = 2
-border_color = Color(1, 1, 1, 0.16)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enemy_fill"]
-bg_color = Color(0.98, 0.52, 0.47, 1)
-border_width_top = 2
-border_color = Color(1, 1, 1, 0.16)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [node name="BattleField" type="Node" unique_id=1889322430]
 script = ExtResource("1_wha5p")
@@ -65,7 +40,7 @@ script = ExtResource("6_floor")
 
 [node name="Starlight" type="CPUParticles2D" parent="Entities" unique_id=1882045913]
 z_index = 2
-position = Vector2(512, 300)
+position = Vector2(640, 360)
 amount = 80
 texture = SubResource("GradientTexture2D_star")
 lifetime = 7.0
@@ -93,46 +68,24 @@ mouse_filter = 2
 
 [node name="TopBar" type="HBoxContainer" parent="BattleUI/HUD" unique_id=1316034524]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 16.0
-offset_top = 12.0
-offset_right = -16.0
-offset_bottom = 52.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -633.0
+offset_top = 9.0
+offset_right = 635.0
+offset_bottom = 41.0
 grow_horizontal = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 1008
 
-[node name="PlayerHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=143040650]
-custom_minimum_size = Vector2(260, 32)
+[node name="PlayerHealthBar" parent="BattleUI/HUD/TopBar" unique_id=1826464490 instance=ExtResource("4_2qemg")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.93, 0.91, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.07, 0.9)
-theme_override_constants/outline_size = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_player_fill")
-max_value = 1.0
-script = ExtResource("4_iv8cc")
 
-[node name="TurnLabel" type="Label" parent="BattleUI/HUD/TopBar" unique_id=2074854699]
+[node name="EnemyHealthBar" parent="BattleUI/HUD/TopBar" unique_id=2050673262 instance=ExtResource("5_2qemg")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
-text = "Turn 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="EnemyHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=303825936]
-custom_minimum_size = Vector2(260, 32)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.93, 0.91, 1, 1)
-theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.07, 0.9)
-theme_override_constants/outline_size = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_enemy_fill")
-max_value = 1.0
-script = ExtResource("5_2qemg")
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
+visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -171,6 +124,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Hand" type="Control" parent="BattleUI" unique_id=476706719]
+visible = false
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -198,6 +152,7 @@ theme_override_constants/separation = 156
 alignment = 1
 
 [node name="EndTurnButton" type="Button" parent="BattleUI" unique_id=1904382716]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -212,6 +167,7 @@ grow_vertical = 0
 text = "End Turn"
 
 [node name="DeckInfo" type="Control" parent="BattleUI" unique_id=1756267846]
+visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -247,7 +203,3 @@ text = "Discard: 0"
 [node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]
 visible = false
 BattleField = NodePath("../..")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=885474875]
-visible = false
-position = Vector2(570, 300)

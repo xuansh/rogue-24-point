@@ -1,6 +1,6 @@
 extends Node
 @onready var battle_system: BattleSystem = $BattleControl/BattleSystem
-@onready var player_health_bar: ProgressBar = $BattleUI/HUD/TopBar/PlayerHealthBar
+@onready var player_health_bar: ProgressBar = $BattleUI/HUD/TopBar/PlayerHealthBar/ProgressBar
 
 var slime_tres : Resource = load("res://Data/Enemies/slime.tres")
 
