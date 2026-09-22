@@ -22,25 +22,29 @@ fill_from = Vector2(0.517094, 0.508547)
 fill_to = Vector2(1, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(0.118, 0.098, 0.149, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+bg_color = Color(0.067, 0.055, 0.09, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_player_fill"]
-bg_color = Color(1, 0.51, 0.44, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+bg_color = Color(0.13, 0.78, 0.66, 1)
+border_width_top = 2
+border_color = Color(1, 1, 1, 0.16)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enemy_fill"]
-bg_color = Color(0.11, 0.48, 0.42, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+bg_color = Color(0.98, 0.52, 0.47, 1)
+border_width_top = 2
+border_color = Color(1, 1, 1, 0.16)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="BattleField" type="Node" unique_id=1889322430]
 script = ExtResource("1_wha5p")
@@ -101,6 +105,9 @@ theme_override_constants/separation = 16
 [node name="PlayerHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=143040650]
 custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.91, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.07, 0.9)
+theme_override_constants/outline_size = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_player_fill")
 max_value = 1.0
@@ -117,6 +124,9 @@ vertical_alignment = 1
 [node name="EnemyHealthBar" type="ProgressBar" parent="BattleUI/HUD/TopBar" unique_id=303825936]
 custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.91, 1, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.07, 0.9)
+theme_override_constants/outline_size = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_enemy_fill")
 max_value = 1.0
@@ -237,3 +247,7 @@ text = "Discard: 0"
 [node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]
 visible = false
 BattleField = NodePath("../..")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=885474875]
+visible = false
+position = Vector2(570, 300)
