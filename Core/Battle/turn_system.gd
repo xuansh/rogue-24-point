@@ -70,6 +70,7 @@ func start_enemy_turn(index : int):
 	payload._enemy_state = e_state
 	SignalBus.enemy_turn_started.emit(payload)
 	change_turn_phase(TurnPhase.ENEMY_TURN)
+	end_enemy_turn(index)
 
 func end_enemy_turn(index : int):
 	var e_state : EnemyState = enemy_system.enemies_state[index]

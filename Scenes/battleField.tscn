@@ -87,6 +87,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
+visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ce06wm1mrbqsj" path="res://Entities/Blocks/OperatorBlock/operator_block.gd" id="1_qphgo"]
 [ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="2_qphgo"]
-[ext_resource type="Script" path="res://Entities/Blocks/OperatorBlock/card_shard.gd" id="3_shard"]
+[ext_resource type="Script" uid="uid://8p623krrkqy5" path="res://Entities/Blocks/OperatorBlock/card_shard.gd" id="3_shard"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_shard"]
 points = PackedVector2Array(-58, -56, 2, -56, 60, 0, 2, 56, -58, 56)
@@ -80,16 +80,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="OutputRichTextLabel" type="RichTextLabel" parent="Area2D" unique_id=160258461]
-offset_left = 0.0
 offset_top = -18.0
 offset_right = 44.0
 offset_bottom = 18.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 0.95686275, 0.9098039, 1)
+theme_override_fonts/normal_font = ExtResource("2_qphgo")
 theme_override_font_sizes/normal_font_size = 29
-autowrap_mode = 0
 fit_content = true
 scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 

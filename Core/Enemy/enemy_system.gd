@@ -18,7 +18,6 @@ func init(battle_system : BattleSystem):
 		battle_system.root.get_node("Entities").get_node("EnemiesContainer").add_child(state.enemy_node)
 		state.enemy_node.position = IsoFloor.mirror(IsoFloor.ANCHOR)
 		state.reset_behavior()
-
 		# 开局先放一个数字块: 玩家先手, 第一回合 buffer 全空的话就没牌可打
 		state.spawn_block_value = state.enemy_data.random_value_spawn_block()
 		self.buffer_system.spawn_number_block_in_buffer(state.spawn_block_value)
@@ -28,7 +27,7 @@ func _on_enemy_turn_started(payload : SignalBus.EnemyTurnStartedPayload):
 	handle_action(payload._enemy_state)
 
 func _on_enemy_turn_exited(payload : SignalBus.EnemyTurnExitedPayload):
-	payload._enemy_state.float_amplitude = 10
+	payload._enemy_state.float_amplitude = 0
 
 func handle_action(state : EnemyState):
 	#var label : Label = state.enemy_node.get_node("Label")

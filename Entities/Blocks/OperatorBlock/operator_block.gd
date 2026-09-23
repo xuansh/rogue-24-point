@@ -59,7 +59,7 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_released("Mouse-Left"):
 		# 只有正在拖的那张才回位，否则场上所有 OP 都会被重置到 origin_position
 		if is_dragging:
-			if self.position.distance_to(origin_position) > 200:
+			if self.position.distance_to(origin_position) > 200 and _operand_values[0] != EMPTY_OPERAND and _operand_values[1] != EMPTY_OPERAND:
 				var payload := SignalBus.OperatorBlockRemovalRequestedPayload.new()
 				payload.calculate_result = self.calculate_result
 				payload.operator_block = self
@@ -74,6 +74,7 @@ func block_focus():
 func block_unfocus():
 	_animate(1.0)
 
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	if is_dragging:
 		self.global_position = get_global_mouse_position()

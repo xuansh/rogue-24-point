@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://me7p8dhhguec"]
 
 [ext_resource type="StyleBox" uid="uid://b3kb132twp4qr" path="res://Data/Blocks/NumberBlock.tres" id="1_8foih"]
+[ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="2_1r338"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5aov"]
 size = Vector2(64, 64)
@@ -42,6 +43,7 @@ pivot_offset = Vector2(20, 20)
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.23137255, 0.14117648, 0.07450981, 1)
 theme_override_constants/paragraph_separation = -8
+theme_override_fonts/normal_font = ExtResource("2_1r338")
 theme_override_font_sizes/normal_font_size = 38
 bbcode_enabled = true
 scroll_active = false

@@ -32,5 +32,18 @@ func _apply_behavior() -> void:
 	if cycle.is_empty():
 		# 没配行为循环就退化成每回合都产牌 免得敌人站着不动
 		current_behavior = EnemyData.Behavior.SPAWN_BLOCK
+		_refresh_intent()
 		return
 	current_behavior = cycle[clampi(_behavior_index, 0, cycle.size() - 1)]
+	_refresh_intent()
+
+## 头上的动向图标：只说"会生成什么 + 几个"。不产牌的回合(防御)直接藏起来，
+## 玩家看到"头上没东西"就等于"这回合它什么都不干"
+func _refresh_intent() -> void:
+	if enemy_node == null:
+		return
+	var intent := enemy_node.get_node_or_null("EnemyIntent") as EnemyIntent
+	if intent == null:
+		return
+	intent.visible = current_behavior == EnemyData.Behavior.SPAWN_BLOCK
+	intent.count = enemy_data.spawn_block_count
