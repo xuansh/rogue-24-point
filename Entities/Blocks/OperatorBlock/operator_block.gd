@@ -2,9 +2,11 @@ extends Block
 
 class_name OperatorBlock 
 
-@onready var operand_a : Area2D = $Area2D/OperatorBlock/Operand_A
-@onready var operand_b : Area2D = $Area2D/OperatorBlock/Operand_B
+@onready var operand_a : Area2D = $Area2D/Operand_A
+@onready var operand_b : Area2D = $Area2D/Operand_B
 @onready var output_label : RichTextLabel = $Area2D/OutputRichTextLabel
+@onready var body : CardShard = $Area2D/Body
+@onready var collision_shape : CollisionShape2D = $Area2D/CollisionShape2D
 
 var origin_position : Vector2
 var calculate_result : int
@@ -25,6 +27,12 @@ var _operand_values : Array[int] = [EMPTY_OPERAND, EMPTY_OPERAND]
 
 func _ready() -> void:
 	area_2d = self.get_node("Area2D")
+	# 每张卡的刀身抖法错开一点，手牌才像一张张手打的而不是复制粘贴
+	body.variant = randi()
+	# 判定区跟刀身同形状，右上那块空三角不该算在卡上
+	var shape := ConvexPolygonShape2D.new()
+	shape.points = PackedVector2Array(CardShard.SHARD)
+	collision_shape.shape = shape
 	area_2d.mouse_entered.connect(
 		func():
 			is_mouse_in_area = true
@@ -47,6 +55,7 @@ func _input(event: InputEvent) -> void:
 		origin_position = self.position
 		is_dragging = true
 		_is_committed = false
+		body.armed = true
 	elif event.is_action_released("Mouse-Left"):
 		# 只有正在拖的那张才回位，否则场上所有 OP 都会被重置到 origin_position
 		if is_dragging:
@@ -57,6 +66,7 @@ func _input(event: InputEvent) -> void:
 				SignalBus.operator_block_dropped.emit(payload)
 			self.position = origin_position
 			is_dragging = false
+			body.armed = false
 
 func block_focus():
 	_animate(FOCUS_SCALE)

@@ -71,12 +71,14 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -633.0
-offset_top = 9.0
-offset_right = 635.0
-offset_bottom = 41.0
+offset_left = -758.0
+offset_top = 18.0
+offset_right = 510.0
+offset_bottom = 50.0
 grow_horizontal = 2
-theme_override_constants/separation = 1008
+pivot_offset = Vector2(633, 0)
+theme_override_constants/separation = 869
+alignment = 1
 
 [node name="PlayerHealthBar" parent="BattleUI/HUD/TopBar" unique_id=1826464490 instance=ExtResource("4_2qemg")]
 layout_mode = 2
@@ -85,7 +87,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
-visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -124,7 +125,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Hand" type="Control" parent="BattleUI" unique_id=476706719]
-visible = false
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -152,7 +152,6 @@ theme_override_constants/separation = 156
 alignment = 1
 
 [node name="EndTurnButton" type="Button" parent="BattleUI" unique_id=1904382716]
-visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
