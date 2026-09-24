@@ -16,7 +16,7 @@ const NUMBER_CENTER_Y := 18.0
 const NUMBER_SIZE := 20
 const NUMBER_WIDTH := 120.0
 const NUMBER_COLOR := Color(0.941, 0.925, 0.988)
-const NUMBER_OUTLINE := Color(0.071, 0.043, 0.125)
+const NUMBER_OUTLINE := Color(0.129, 0.122, 0.173)
 
 ## 生成物的图形；换成别的动向图标就换这里
 @export var glyph: Texture2D = preload("res://Assets/Textures/spawn_block.png")

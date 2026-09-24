@@ -2,7 +2,8 @@
 class_name IsoFloor
 extends Node2D
 
-## 深紫菱形网格战场地面 + 深色背景。放在 Entities 的第一个子节点，绘制在实体之下。
+## 鼠尾草绿菱形网格战场地面 + 同色系背景（绗缝质感）。放在 Entities 的第一个子节点，
+## 绘制在实体之下。
 ## 这里的格子尺寸与原点是全场景对齐的唯一来源，CubeEntity 用同一套公式吸附格心。
 
 ## 设计分辨率 = project.godot 的窗口尺寸。以前这里是写死的 1152，改了窗口尺寸后
@@ -20,23 +21,23 @@ static var ANCHOR := Vector2(
 	DESIGN_SIZE.x * 0.5 - roundf(DESIGN_SIZE.x * 0.315 / (CELL_W * 0.5)) * CELL_W * 0.5,
 	BASE_Y)
 
-const BG := Color(0.055, 0.043, 0.086)
-const TILE_A := Color("1f162eff")
-const TILE_B := Color(0.150, 0.106, 0.216)
-const TILE_PIT := Color(0.082, 0.059, 0.124)
-const TILE_BRIGHT := Color("2e2140ff")
-const LINE := Color(0.545, 0.400, 0.850, 0.42)
-const MARK := Color(0.040, 0.030, 0.062, 0.55)
+## 配色走"鼠尾草绿绗缝"：背景比砖面略深，砖面在同一色相里上下浮动，
+## 网格缝线比砖面深一档，远看就是一整片拼布
+const BG := Color(0.427, 0.541, 0.416)
+const TILE_A := Color(0.494, 0.620, 0.482)
+const TILE_B := Color(0.561, 0.686, 0.545)
+const TILE_PIT := Color(0.412, 0.529, 0.400)
+const TILE_BRIGHT := Color(0.616, 0.741, 0.596)
+const LINE := Color(0.278, 0.376, 0.267, 0.72)
+const MARK := Color(0.290, 0.392, 0.282, 0.45)
 
-## 地牢装饰物配色。石头取砖面亮色那一支，骨头偏灰白，
-## 苔草和积水都压得很暗，免得装饰比实体方块还抢眼
-const DECOR_STONE := Color(0.27, 0.22, 0.36)
-const DECOR_STONE_LIT := Color(0.40, 0.34, 0.52)
-const DECOR_BONE := Color(0.58, 0.55, 0.51)
-const DECOR_STEM := Color(0.50, 0.47, 0.44)
-const DECOR_MOSS := Color(0.30, 0.41, 0.29)
-const DECOR_PUDDLE := Color(0.085, 0.070, 0.140)
-const DECOR_CAP := Color(0.50, 0.24, 0.32)
+## 地牢装饰物配色，都压在同一套灰绿里，免得装饰比实体方块还抢眼
+const DECOR_STONE := Color(0.438, 0.463, 0.412)
+const DECOR_STONE_LIT := Color(0.596, 0.624, 0.565)
+const DECOR_STEM := Color(0.769, 0.749, 0.678)
+const DECOR_MOSS := Color(0.361, 0.478, 0.333)
+const DECOR_PUDDLE := Color(0.302, 0.427, 0.424)
+const DECOR_CAP := Color(0.718, 0.447, 0.376)
 
 ## 整体透明度
 @export var intensity := 1.0
@@ -126,16 +127,14 @@ func _ready() -> void:
 
 ## 按格子哈希挑一种装饰画出来。unit = 半格宽高，用它把单位坐标换算成菱形内的像素位置
 func _draw_decor(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
-	match int(_hash(i, j, 51) * 6.0):
+	match int(_hash(i, j, 51) * 5.0):
 		0:
 			_decor_rubble(p, i, j, unit, a)
 		1:
-			_decor_bone(p, i, j, unit, a)
-		2:
 			_decor_mushrooms(p, i, j, unit, a)
-		3:
+		2:
 			_decor_weeds(p, i, j, unit, a)
-		4:
+		3:
 			_decor_puddle(p, i, j, unit, a)
 		_:
 			_decor_stalagmite(p, i, j, unit, a)
@@ -152,19 +151,6 @@ func _decor_rubble(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
 			]),
 			Color(col.r, col.g, col.b, 0.85 * a)
 		)
-
-## 骨头：一根横杆加两端的骨节，y 方向压一半才像躺在等角地面上
-func _decor_bone(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
-	var c := p + _cell_point(i, j, 70) * unit * 0.55
-	var ang := _hash(i, j, 71) * TAU
-	var reach := Vector2(cos(ang), sin(ang) * 0.5) * (6.0 + _hash(i, j, 72) * 4.0)
-	var col := Color(DECOR_BONE.r, DECOR_BONE.g, DECOR_BONE.b, 0.7 * a)
-	draw_line(c - reach, c + reach, col, 2.0, true)
-	var side := reach.orthogonal().normalized() * 1.7
-	for e in 2:
-		var tip := c + reach * (1.0 if e == 0 else -1.0)
-		draw_circle(tip + side, 1.7, col)
-		draw_circle(tip - side, 1.7, col)
 
 ## 蘑菇：细杆加圆帽，一丛最多三朵
 func _decor_mushrooms(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:

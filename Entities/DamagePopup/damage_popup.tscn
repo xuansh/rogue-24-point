@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://brf2ehb1yixd6"]
+
+[ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="1_npa4w"]
+[ext_resource type="Script" uid="uid://1c6ueihj8akk" path="res://Entities/DamagePopup/damage_popup.gd" id="1_pq60s"]
+
+[node name="DamagePopup" type="Control" unique_id=375973752]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pq60s")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1058179355]
+layout_mode = 0
+offset_right = 61.0
+offset_bottom = 24.0
+pivot_offset = Vector2(0, 24)
+theme_override_fonts/normal_font = ExtResource("1_npa4w")
+text = "99"
+vertical_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1090029736]

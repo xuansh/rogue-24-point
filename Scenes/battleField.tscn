@@ -54,7 +54,7 @@ initial_velocity_min = 2.0
 initial_velocity_max = 12.0
 scale_amount_min = 0.12
 scale_amount_max = 0.45
-color = Color(0.84, 0.78, 1, 0.45)
+color = Color(0.851, 0.918, 0.851, 0.45)
 
 [node name="BattleUI" type="CanvasLayer" parent="." unique_id=1978403320]
 
@@ -88,6 +88,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
+visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -126,6 +127,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Hand" type="Control" parent="BattleUI" unique_id=476706719]
+visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -154,6 +156,7 @@ theme_override_constants/separation = 156
 alignment = 1
 
 [node name="EndTurnButton" type="Button" parent="BattleUI" unique_id=1904382716]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -193,12 +196,10 @@ alignment = 2
 
 [node name="DrawPileLabel" type="Label" parent="BattleUI/DeckInfo/VBoxContainer" unique_id=762319702]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
 text = "Draw: 10"
 
 [node name="DiscardPileLabel" type="Label" parent="BattleUI/DeckInfo/VBoxContainer" unique_id=2073929133]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.83, 0.79, 0.96, 1)
 text = "Discard: 0"
 
 [node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]

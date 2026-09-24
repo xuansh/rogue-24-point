@@ -27,9 +27,9 @@ const MARK_STEP := 8.0
 ## 换个数字换一套抖法，多张手牌不会长得一模一样
 @export var variant := 0 : set = _set_variant
 
-const BODY_COLOR := Color(0.180, 0.141, 0.250)
-const EDGE_COLOR := Color(0.545, 0.400, 0.850, 0.72)
-const EDGE_ARMED_COLOR := Color(0.720, 0.560, 1.000, 0.95)
+const BODY_COLOR := Color(0.235, 0.227, 0.306)
+const EDGE_COLOR := Color(0.784, 0.784, 0.831, 0.72)
+const EDGE_ARMED_COLOR := Color(0.949, 0.949, 0.961, 0.95)
 ## 箭头用数字方块的橙：提示这两个数最后会变成伤害
 const MARK_COLOR := Color(1.000, 0.720, 0.420, 0.85)
 const EQUALS_COLOR := Color(0.550, 0.480, 0.700, 0.70)

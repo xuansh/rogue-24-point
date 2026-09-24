@@ -51,6 +51,10 @@ folder_colors={
 BufferSlotArea=""
 HandOperatorBlockOperandArea=""
 
+[gui]
+
+theme/custom="res://Data/UI/theme.tres"
+
 [input]
 
 KeyBoard-W={
@@ -71,6 +75,6 @@ common/physics_interpolation=true
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=2
 rendering_device/driver.windows="d3d12"
 viewport/hdr_2d=true
+anti_aliasing/quality/use_taa=true

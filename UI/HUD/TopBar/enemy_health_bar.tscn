@@ -5,12 +5,12 @@
 [ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="3_at1up"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7ee8"]
-bg_color = Color(0.067775145, 0.0677024, 0.13524693, 1)
+bg_color = Color(0.235, 0.227, 0.306, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.0179419, 0.01793592, 0.050395004, 1)
+border_color = Color(0.784, 0.784, 0.831, 0.6)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -28,12 +28,12 @@ content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(0.33342412, 0.11209684, 0.06915579, 1)
+bg_color = Color(0.157, 0.149, 0.212, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.45121956, 0.16337079, 0.10749585, 1)
+border_color = Color(0.353, 0.341, 0.431, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
