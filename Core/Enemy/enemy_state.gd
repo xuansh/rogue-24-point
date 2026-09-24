@@ -12,7 +12,7 @@ var spawn_block_value : int
 
 ## 当前行为放在 state 上 不能写在 enemy_data 上:
 ## enemy_data 是 .tres 的共享实例, 改它会污染同一场战斗的其它敌人和下一场战斗
-var current_behavior : EnemyData.Behavior = EnemyData.Behavior.SPAWN_BLOCK
+var current_behavior : EnemyData.Behavior
 var _behavior_index : int = 0
 
 ## 进入战斗时调用 从行为循环的第一项开始
@@ -22,13 +22,13 @@ func reset_behavior() -> void:
 
 ## 走到行为循环的下一项 走完一轮回到开头
 func advance_behavior() -> void:
-	var cycle_size := enemy_data.behavior_cycle.size()
+	var cycle_size := enemy_data.behavior_sequence.size()
 	if cycle_size > 0:
 		_behavior_index = (_behavior_index + 1) % cycle_size
 	_apply_behavior()
 
 func _apply_behavior() -> void:
-	var cycle := enemy_data.behavior_cycle
+	var cycle := enemy_data.behavior_sequence
 	if cycle.is_empty():
 		# 没配行为循环就退化成每回合都产牌 免得敌人站着不动
 		current_behavior = EnemyData.Behavior.SPAWN_BLOCK

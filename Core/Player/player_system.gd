@@ -16,6 +16,7 @@ func reset() -> void:
 	player_state._floor = 0
 	player_state.player_max_hp = 100
 	player_state.player_hp = player_state.player_max_hp
+	player_state.max_cost_point = 4
 	
 	player_state.gold = 0
 	player_state.relics.clear()
@@ -36,6 +37,8 @@ func init(battle_system : BattleSystem):
 	var battle_state = battle_system.battle_state
 	battle_state.player_hp = self.player_state.player_hp
 	battle_state.player_max_hp = self.player_state.player_max_hp
+	# 费用上限复制进战斗层，之后扣的都是 battle_state.cost_point
+	battle_state.cost_point = self.player_state.max_cost_point
 	battle_state.deck_inventory = self.player_state.opertor_deck_inventory
 
 	# battle_field_inited 由 BattleSystem 在所有子系统初始化完之后统一发射

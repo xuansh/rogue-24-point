@@ -47,7 +47,7 @@ signal enemy_hp_changed(payload : EnemyHPChangedPayload)
 
 #region BlockSystem
 class PileDrawStartedPayload extends RefCounted:
-	var block_class_name : String
+	var deck_block : DeckBlock
 signal pile_draw_started(payload : PileDrawStartedPayload)
 #endregion
 

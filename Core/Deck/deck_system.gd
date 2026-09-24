@@ -14,7 +14,9 @@ func init(_battle_system: BattleSystem):
 	deck_state.hand_pile = []
 	deck_state.discard_pile = []
 	
-	SignalBus.operator_block_dropped.connect(remove_pile)
+	# 收 removal_requested: 卡片发出请求 -> 这里移牌并 free -> 再发 dropped 给 EnemySystem
+	# 之前接的是 operator_block_dropped，而 remove_pile 结尾又发同一个讯号，会无限递归
+	SignalBus.operator_block_removal_requested.connect(remove_pile)
 	
 	init_draw_pile()
 
@@ -45,7 +47,7 @@ func draw_draw_pile(count : int):
 		var index = randi_range(0, deck_state.draw_pile.size() - 1)
 		var card = deck_state.draw_pile.pop_at(index)
 		var payload := SignalBus.PileDrawStartedPayload.new()
-		payload.block_class_name = "OperatorBlock"
+		payload.deck_block = card
 		SignalBus.pile_draw_started.emit(payload)
 		deck_state.hand_pile.append(card)
 

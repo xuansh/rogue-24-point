@@ -22,6 +22,18 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cost_badge"]
+bg_color = Color(0.078, 0.063, 0.118, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.545, 0.4, 0.85, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
 [node name="OperatorBlock" type="Control" unique_id=227554338]
 layout_mode = 3
 anchors_preset = 0
@@ -90,6 +102,27 @@ theme_override_font_sizes/normal_font_size = 29
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CostBadge" type="Panel" parent="Area2D" unique_id=1904238771]
+offset_left = -70.0
+offset_top = -68.0
+offset_right = -46.0
+offset_bottom = -44.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cost_badge")
+
+[node name="CostLabel" type="RichTextLabel" parent="Area2D/CostBadge" unique_id=1540483906]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+mouse_filter = 2
+theme_override_constants/paragraph_separation = -4
+theme_override_fonts/normal_font = ExtResource("2_qphgo")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 

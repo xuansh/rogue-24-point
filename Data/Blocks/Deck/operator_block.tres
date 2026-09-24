@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DeckBlock" format=3 uid="uid://bshbpp4im3ud0"]
+
+[ext_resource type="PackedScene" uid="uid://c7d2p864e5ld2" path="res://Entities/Blocks/OperatorBlock/OperatorBlock.tscn" id="1_n52aj"]
+[ext_resource type="Script" uid="uid://do46qv6vk6s0u" path="res://Data/Blocks/Deck/deck_block.gd" id="2_ahnqq"]
+
+[resource]
+script = ExtResource("2_ahnqq")
+cost = 2
+block_packed_scene = ExtResource("1_n52aj")
+metadata/_custom_type_script = "uid://do46qv6vk6s0u"

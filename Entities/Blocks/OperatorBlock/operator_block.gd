@@ -7,9 +7,16 @@ class_name OperatorBlock
 @onready var output_label : RichTextLabel = $Area2D/OutputRichTextLabel
 @onready var body : CardShard = $Area2D/Body
 @onready var collision_shape : CollisionShape2D = $Area2D/CollisionShape2D
+@onready var cost_label : RichTextLabel = $Area2D/CostBadge/CostLabel
+@onready var cost_badge : Panel = $Area2D/CostBadge
 
 var origin_position : Vector2
 var calculate_result : int
+## 这张牌的打出费用 由牌库资料(DeckBlock)在生成时写入
+## 必须在 add_child() 之前赋值: add_child 会触发 _ready() 拿它填 label
+var cost : int = 0
+## 本场战斗的费用池 同样由 BlockSystem 在 add_child 之前注入
+var battle_state : BattleState
 
 ## 聚焦时的放大倍率
 const FOCUS_SCALE := 1.12
@@ -20,13 +27,18 @@ const PIVOT_OFFSET := Vector2(0, 28)
 const DURATION := 0.12
 ## 空槽位的标记 数字块的值是 1~9 不会撞上
 const EMPTY_OPERAND := -1
+## 费用不足时徽章闪的红
+const NO_COST_TINT := Color(1.0, 0.35, 0.35)
 
 var _tween : Tween
+## 徽章闪红的补间 跟 _tween 分开: 焦点缩放随时可能打断它, 共用会被 kill 掉
+var _badge_tween : Tween
 ## 两个操作数当前的值 下标 0 = Operand_A, 1 = Operand_B
 var _operand_values : Array[int] = [EMPTY_OPERAND, EMPTY_OPERAND]
 
 func _ready() -> void:
 	area_2d = self.get_node("Area2D")
+	cost_label.text = str(cost)
 	# 每张卡的刀身抖法错开一点，手牌才像一张张手打的而不是复制粘贴
 	body.variant = randi()
 	# 判定区跟刀身同形状，右上那块空三角不该算在卡上
@@ -59,14 +71,38 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_released("Mouse-Left"):
 		# 只有正在拖的那张才回位，否则场上所有 OP 都会被重置到 origin_position
 		if is_dragging:
-			if self.position.distance_to(origin_position) > 200 and _operand_values[0] != EMPTY_OPERAND and _operand_values[1] != EMPTY_OPERAND:
-				var payload := SignalBus.OperatorBlockRemovalRequestedPayload.new()
-				payload.calculate_result = self.calculate_result
-				payload.operator_block = self
-				SignalBus.operator_block_dropped.emit(payload)
+			_resolve_drop()
 			self.position = origin_position
 			is_dragging = false
 			body.armed = false
+
+## 松手时结算这次拖放。
+## 判定顺序有意义: 距离和操作数先判、费用最后判。反过来的话，
+## 一张没填满、也没真的拖出去的牌会先被扣费
+func _resolve_drop() -> void:
+	if self.position.distance_to(origin_position) <= 200:
+		return
+	if _operand_values[0] == EMPTY_OPERAND or _operand_values[1] == EMPTY_OPERAND:
+		return
+	if not battle_state.try_spend_cost(cost):
+		_flash_no_cost()
+		return
+	var payload := SignalBus.OperatorBlockRemovalRequestedPayload.new()
+	payload.calculate_result = self.calculate_result
+	payload.operator_block = self
+	# 发 removal_requested 而不是 dropped: 前者给 DeckSystem 移牌，
+	# 后者由 DeckSystem 移完之后再发，给 EnemySystem 结算伤害
+	SignalBus.operator_block_removal_requested.emit(payload)
+
+## 费用不足的反馈: 徽章闪一下红再淡回原色。
+## 用 modulate 而不是改 StyleBoxFlat: 那个 stylebox 是场景内的 SubResource，
+## 所有卡共用同一份，直接改会让整手牌一起变红
+func _flash_no_cost() -> void:
+	if _badge_tween and _badge_tween.is_valid():
+		_badge_tween.kill()
+	cost_badge.modulate = NO_COST_TINT
+	_badge_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_badge_tween.tween_property(cost_badge, "modulate", Color.WHITE, 0.45)
 
 func block_focus():
 	_animate(FOCUS_SCALE)

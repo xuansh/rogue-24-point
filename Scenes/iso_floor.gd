@@ -21,18 +21,30 @@ static var ANCHOR := Vector2(
 	BASE_Y)
 
 const BG := Color(0.055, 0.043, 0.086)
-const TILE_A := Color(0.121, 0.086, 0.180)
+const TILE_A := Color("1f162eff")
 const TILE_B := Color(0.150, 0.106, 0.216)
 const TILE_PIT := Color(0.082, 0.059, 0.124)
-const TILE_BRIGHT := Color(0.180, 0.130, 0.252)
+const TILE_BRIGHT := Color("2e2140ff")
 const LINE := Color(0.545, 0.400, 0.850, 0.42)
 const MARK := Color(0.040, 0.030, 0.062, 0.55)
+
+## 地牢装饰物配色。石头取砖面亮色那一支，骨头偏灰白，
+## 苔草和积水都压得很暗，免得装饰比实体方块还抢眼
+const DECOR_STONE := Color(0.27, 0.22, 0.36)
+const DECOR_STONE_LIT := Color(0.40, 0.34, 0.52)
+const DECOR_BONE := Color(0.58, 0.55, 0.51)
+const DECOR_STEM := Color(0.50, 0.47, 0.44)
+const DECOR_MOSS := Color(0.30, 0.41, 0.29)
+const DECOR_PUDDLE := Color(0.085, 0.070, 0.140)
+const DECOR_CAP := Color(0.50, 0.24, 0.32)
 
 ## 整体透明度
 @export var intensity := 1.0
 ## 网格线风格：STRAIGHT = 之前的笔直网格；DUNGEON = 断续微弯的怪诞网格
 enum GridStyle { STRAIGHT, DUNGEON }
 @export var grid_style := GridStyle.DUNGEON
+## 地牢装饰物密度：每格出现装饰的机率，设 0 就整片关掉
+@export_range(0.0, 0.3, 0.01) var decor_density := 0.07
 
 ## 世界坐标吸附到最近的菱形格中心，让方块底面正好压住一个格子
 static func snap_to_cell(p: Vector2) -> Vector2:
@@ -112,6 +124,107 @@ func _ready() -> void:
 		push_warning("IsoFloor 带了位移，会和实体吸附用的世界网格错位，请在场景里把它归零")
 	get_viewport().size_changed.connect(_refresh)
 
+## 按格子哈希挑一种装饰画出来。unit = 半格宽高，用它把单位坐标换算成菱形内的像素位置
+func _draw_decor(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	match int(_hash(i, j, 51) * 6.0):
+		0:
+			_decor_rubble(p, i, j, unit, a)
+		1:
+			_decor_bone(p, i, j, unit, a)
+		2:
+			_decor_mushrooms(p, i, j, unit, a)
+		3:
+			_decor_weeds(p, i, j, unit, a)
+		4:
+			_decor_puddle(p, i, j, unit, a)
+		_:
+			_decor_stalagmite(p, i, j, unit, a)
+
+## 碎石：几块散落的小三角，朝上一面提亮一点
+func _decor_rubble(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	for k in 2 + int(_hash(i, j, 60) * 3.0):
+		var c := p + _cell_point(i, j, 61 + k * 3) * unit * 0.62
+		var s := 1.6 + _hash(i, j, 62 + k * 3) * 2.2
+		var col := DECOR_STONE_LIT if _hash(i, j, 63 + k * 3) > 0.5 else DECOR_STONE
+		draw_colored_polygon(
+			PackedVector2Array([
+				c + Vector2(-s, s * 0.45), c + Vector2(s, s * 0.45), c + Vector2(-s * 0.15, -s * 0.8),
+			]),
+			Color(col.r, col.g, col.b, 0.85 * a)
+		)
+
+## 骨头：一根横杆加两端的骨节，y 方向压一半才像躺在等角地面上
+func _decor_bone(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	var c := p + _cell_point(i, j, 70) * unit * 0.55
+	var ang := _hash(i, j, 71) * TAU
+	var reach := Vector2(cos(ang), sin(ang) * 0.5) * (6.0 + _hash(i, j, 72) * 4.0)
+	var col := Color(DECOR_BONE.r, DECOR_BONE.g, DECOR_BONE.b, 0.7 * a)
+	draw_line(c - reach, c + reach, col, 2.0, true)
+	var side := reach.orthogonal().normalized() * 1.7
+	for e in 2:
+		var tip := c + reach * (1.0 if e == 0 else -1.0)
+		draw_circle(tip + side, 1.7, col)
+		draw_circle(tip - side, 1.7, col)
+
+## 蘑菇：细杆加圆帽，一丛最多三朵
+func _decor_mushrooms(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	var stem := Color(DECOR_STEM.r, DECOR_STEM.g, DECOR_STEM.b, 0.7 * a)
+	var cap := Color(DECOR_CAP.r, DECOR_CAP.g, DECOR_CAP.b, 0.8 * a)
+	for k in 1 + int(_hash(i, j, 80) * 3.0):
+		var base := p + _cell_point(i, j, 81 + k * 2) * unit * 0.55
+		var top := base - Vector2(0, 4.0 + _hash(i, j, 82 + k * 2) * 3.5)
+		draw_line(base, top, stem, 1.6, true)
+		draw_circle(top, 1.8 + _hash(i, j, 83 + k * 2) * 1.4, cap)
+
+## 杂草：几根往外散开的短曲线，顶端带点弯
+func _decor_weeds(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	var col := Color(DECOR_MOSS.r, DECOR_MOSS.g, DECOR_MOSS.b, 0.75 * a)
+	for k in 3 + int(_hash(i, j, 90) * 3.0):
+		var base := p + _cell_point(i, j, 91 + k * 2) * unit * 0.7
+		var h := 4.0 + _hash(i, j, 92 + k * 2) * 6.0
+		var sway := (_hash(i, j, 93 + k * 2) - 0.5) * 6.0
+		draw_polyline(
+			PackedVector2Array([
+				base, base + Vector2(sway * 0.35, -h * 0.6), base + Vector2(sway, -h),
+			]),
+			col,
+			1.0,
+			true
+		)
+
+## 积水：压扁的暗色多边形，加一道短反光
+func _decor_puddle(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	var c := p + _cell_point(i, j, 100) * unit * 0.4
+	var r := 5.0 + _hash(i, j, 101) * 5.0
+	const RIM := 8
+	# 半径只抖 0.85~1.0，多边形保持接近凸形，draw_colored_polygon 才不会三角化出错
+	var pts := PackedVector2Array()
+	for k in RIM:
+		var ang := TAU * float(k) / RIM
+		var rad := r * (0.85 + _hash(i, j, 102 + k) * 0.15)
+		pts.append(c + Vector2(cos(ang) * rad, sin(ang) * rad * 0.5))
+	draw_colored_polygon(pts, Color(DECOR_PUDDLE.r, DECOR_PUDDLE.g, DECOR_PUDDLE.b, 0.85 * a))
+	draw_polyline(
+		PackedVector2Array([pts[0].lerp(pts[RIM / 2], 0.3), pts[0].lerp(pts[RIM / 2], 0.55)]),
+		Color(LINE.r, LINE.g, LINE.b, 0.3 * a),
+		1.0,
+		true
+	)
+
+## 石笋：左右两半深浅不同，假装有一面朝着光
+func _decor_stalagmite(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
+	var c := p + _cell_point(i, j, 110) * unit * 0.5
+	var h := 6.0 + _hash(i, j, 111) * 6.0
+	var w := 2.5 + _hash(i, j, 112) * 2.0
+	var lit := Color(DECOR_STONE_LIT.r, DECOR_STONE_LIT.g, DECOR_STONE_LIT.b, 0.9 * a)
+	var dark := Color(DECOR_STONE.r, DECOR_STONE.g, DECOR_STONE.b, 0.9 * a)
+	draw_colored_polygon(
+		PackedVector2Array([c + Vector2(-w, 0), c + Vector2(0, -h), c + Vector2(0, 0)]), lit
+	)
+	draw_colored_polygon(
+		PackedVector2Array([c + Vector2(0, 0), c + Vector2(0, -h), c + Vector2(w, 0)]), dark
+	)
+
 func _refresh(_value = null) -> void:
 	queue_redraw()
 
@@ -124,6 +237,8 @@ func _draw() -> void:
 	var origin := ANCHOR
 	var focus := Vector2(DESIGN_SIZE.x * 0.5, BASE_Y)
 	var span := int(maxf(vp.x, vp.y) / hw) + 4
+	# 装饰物先收集、后绘制：它们会长出格子外，得压在所有地砖之上
+	var decor_cells : Array = []
 
 	for i in range(-span, span + 1):
 		for j in range(-span, span + 1):
@@ -171,3 +286,10 @@ func _draw() -> void:
 				)
 			else:
 				_draw_wonky_grid(diamond, Vector2i(i - j, i + j), a)
+			if decor_density > 0.0 and _hash(i, j, 50) < decor_density:
+				decor_cells.append([p, i, j, a])
+
+	# 按屏幕 y 排序再画：先远后近，近处的装饰盖住远处的，前后关系才对
+	decor_cells.sort_custom(func(x, y): return x[0].y < y[0].y)
+	for d in decor_cells:
+		_draw_decor(d[0], d[1], d[2], Vector2(hw, qh), d[3])
