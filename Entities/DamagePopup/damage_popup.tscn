@@ -17,8 +17,7 @@ layout_mode = 0
 offset_right = 61.0
 offset_bottom = 24.0
 pivot_offset = Vector2(0, 24)
+theme_override_colors/default_color = Color(0.5195817, 0.7473457, 0.70153534, 1)
 theme_override_fonts/normal_font = ExtResource("1_npa4w")
 text = "99"
 vertical_alignment = 1
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1090029736]

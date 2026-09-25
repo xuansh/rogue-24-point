@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bnbn6guj4axaa" path="res://Entities/cube_entity.gd" id="1_8ipea"]
 [ext_resource type="PackedScene" uid="uid://bwdkkkuioaphf" path="res://Entities/Enemy/enemy_intent.tscn" id="2_intent"]
+[ext_resource type="PackedScene" uid="uid://brf2ehb1yixd6" path="res://Entities/DamagePopup/damage_popup.tscn" id="3_rm1lo"]
 
 [node name="Enemy" type="Node2D" unique_id=1374373860]
 script = ExtResource("1_8ipea")
 
 [node name="EnemyIntent" parent="." unique_id=1607608850 instance=ExtResource("2_intent")]
 position = Vector2(0, -84)
+
+[node name="DamagePopup" parent="." unique_id=375973752 instance=ExtResource("3_rm1lo")]

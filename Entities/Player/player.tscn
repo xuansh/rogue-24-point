@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bnbn6guj4axaa" path="res://Entities/cube_entity.gd" id="1_cube"]
 
 [node name="Player" type="Node2D" unique_id=71476137]
+position = Vector2(0, -1)
 script = ExtResource("1_cube")
-color = Color(0.12675977, 0.78129333, 0.66027606, 1)
+color = Color(0.42745098, 0.61960787, 0.7529412, 1)
 float_speed = 1.0

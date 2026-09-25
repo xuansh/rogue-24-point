@@ -20,7 +20,7 @@ shadow_size = 5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kldih"]
 atlas = ExtResource("1_abr0c")
-region = Rect2(320, 192, 16, 16)
+region = Rect2(321, 192, 15, 16)
 margin = Rect2(1.5, 0, 3, 3)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abr0c"]

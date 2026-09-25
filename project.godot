@@ -77,4 +77,3 @@ common/physics_interpolation=true
 
 rendering_device/driver.windows="d3d12"
 viewport/hdr_2d=true
-anti_aliasing/quality/use_taa=true

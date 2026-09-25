@@ -5,8 +5,8 @@
 
 [resource]
 script = ExtResource("1_1cyjh")
-hp = 10
-max_hp = 10
+hp = 120
+max_hp = 120
 enemy_packed_scene = ExtResource("1_3fda8")
 behavior_sequence = Array[int]([0, 0, 1, 0, 0, 0, 1])
 metadata/_custom_type_script = "uid://4al802weun64"

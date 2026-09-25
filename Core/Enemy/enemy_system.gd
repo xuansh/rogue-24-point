@@ -20,6 +20,9 @@ func init(battle_system : BattleSystem):
 		state.reset_behavior()
 		# 开局先放一个数字块: 玩家先手, 第一回合 buffer 全空的话就没牌可打
 		state.spawn_block_value = state.enemy_data.random_value_spawn_block()
+		# 初始化暴擊傷害
+		state.enemy_data.random_critical_point()
+		print(state.enemy_data.critical_point)
 		self.buffer_system.spawn_number_block_in_buffer(state.spawn_block_value)
 
 func _on_enemy_turn_started(payload : SignalBus.EnemyTurnStartedPayload):
