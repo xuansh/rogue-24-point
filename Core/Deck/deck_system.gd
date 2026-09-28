@@ -9,15 +9,19 @@ var battle_system : BattleSystem
 func init(_battle_system: BattleSystem):
 	
 	self.battle_system = _battle_system
-
+	
 	deck_state.draw_pile = []
 	deck_state.hand_pile = []
 	deck_state.discard_pile = []
 	
 	# 收 removal_requested: 卡片发出请求 -> 这里移牌并 free -> 再发 dropped 给 EnemySystem
 	# 之前接的是 operator_block_dropped，而 remove_pile 结尾又发同一个讯号，会无限递归
-	SignalBus.operator_block_removal_requested.connect(remove_pile)
-	
+	SignalBus.operator_block_usage_request_payload.connect(use_hand_pile)
+	SignalBus.operator_block_removal_requested.connect(remove_card_to_discard_pile)
+	SignalBus.player_turn_started.connect(
+		func(payload : SignalBus.PlayerTurnStartedPayload):
+			draw_draw_pile(payload.draw_cards_per_turn)
+	)
 	init_draw_pile()
 
 func init_draw_pile():
@@ -51,9 +55,21 @@ func draw_draw_pile(count : int):
 		SignalBus.pile_draw_started.emit(payload)
 		deck_state.hand_pile.append(card)
 
-func remove_pile(payload : SignalBus.OperatorBlockRemovalRequestedPayload):
-	payload.operator_block.queue_free()
+### 回合结束后将所有手牌移入弃牌堆
+#func discard_all_hand_pile():
+	#for card in deck_state.hand_pile:
+		#
+
+## 通常在玩家使用手牌时调用
+func use_hand_pile(payload : SignalBus.OperatorBlockRemovalRequestedPayload):
 	var dropped_payload := SignalBus.OperatorBlockDroppedPayload.new()
 	dropped_payload.calculate_result = payload.calculate_result
 	dropped_payload.operator_block = payload.operator_block
 	SignalBus.operator_block_dropped.emit(dropped_payload)
+	#ALERT 如果卡牌带有顽固这类 不会随着玩家回合结束移出手牌 的效果 需要在此加个if
+	SignalBus.operator_block_removal_requested.emit(payload)
+
+func remove_card_to_discard_pile(payload : SignalBus.OperatorBlockRemovalRequestedPayload):
+	deck_state.hand_pile.erase(payload.operator_block.reso)
+	deck_state.discard_pile.append(payload.operator_block.reso)
+	payload.operator_block.queue_free()

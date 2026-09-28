@@ -13,5 +13,5 @@ func _ready() -> void:
 		var copy = operator_block_tres.duplicate()
 		battle_system.player_system.player_state.opertor_deck_inventory.append(copy)
 	
-	battle_system.enemy_system.enemies_state.append(e_state1)
+	battle_system.enemy_system.enemy_state = e_state1
 	battle_system.init_battle()

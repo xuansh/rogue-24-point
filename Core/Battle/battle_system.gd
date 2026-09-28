@@ -6,6 +6,8 @@ class_name BattleSystem
 var card_container : Control
 var buffer_slots : HBoxContainer
 var end_button : Button
+var player_node : Node2D
+var enemies_container : Node2D
 
 var battle_state := BattleState.new()
 var enemy_system := EnemySystem.new()
@@ -34,8 +36,8 @@ func emit_battle_field_inited():
 	var payload := SignalBus.BattleFieldInitedPayload.new()
 	payload.player_hp = battle_state.player_hp
 	payload.player_max_hp = battle_state.player_max_hp
-	if enemy_system.enemies_state.size() > 0:
-		var enemy_data := enemy_system.enemies_state[0].enemy_data
+	if enemy_system.enemy_state != null:
+		var enemy_data := enemy_system.enemy_state.enemy_data
 		payload.enemy_hp = enemy_data.hp
 		payload.enemy_max_hp = enemy_data.max_hp
 	SignalBus.battle_field_inited.emit(payload)
@@ -44,3 +46,4 @@ func init():
 	card_container = root.get_node("BattleUI").get_node("Hand").get_node("CardContainer")
 	buffer_slots = root.get_node("BattleUI").get_node("Buffer").get_node("Slots")
 	end_button = root.get_node("BattleUI").get_node("EndTurnButton")
+	enemies_container = root.get_node("Entities").get_node("EnemiesContainer")

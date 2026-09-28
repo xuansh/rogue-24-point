@@ -21,23 +21,21 @@ static var ANCHOR := Vector2(
 	DESIGN_SIZE.x * 0.5 - roundf(DESIGN_SIZE.x * 0.315 / (CELL_W * 0.5)) * CELL_W * 0.5,
 	BASE_Y)
 
-## 配色走"鼠尾草绿绗缝"：背景比砖面略深，砖面在同一色相里上下浮动，
-## 网格缝线比砖面深一档，远看就是一整片拼布
-const BG := Color(0.427, 0.541, 0.416)
-const TILE_A := Color(0.494, 0.620, 0.482)
-const TILE_B := Color(0.561, 0.686, 0.545)
-const TILE_PIT := Color(0.412, 0.529, 0.400)
-const TILE_BRIGHT := Color(0.616, 0.741, 0.596)
-const LINE := Color(0.278, 0.376, 0.267, 0.72)
-const MARK := Color(0.290, 0.392, 0.282, 0.45)
+const BG := Color(0.070, 0.075, 0.085)          # 地牢深处，近黑冷灰
+const TILE_A := Color(0.150, 0.158, 0.170)       # 主地砖，冷灰石
+const TILE_B := Color(0.185, 0.192, 0.205)       # 相邻地砖，略亮
+const TILE_PIT := Color(0.085, 0.090, 0.105)     # 坑/深渊，暗蓝黑
+const TILE_BRIGHT := Color(0.250, 0.255, 0.265)  # 受光地砖，冷白灰
+const LINE := Color(0.045, 0.048, 0.058, 0.85)   # 砖缝，近黑
+const MARK := Color(0.130, 0.140, 0.160, 0.55)   # 地面刻痕/污渍
 
-## 地牢装饰物配色，都压在同一套灰绿里，免得装饰比实体方块还抢眼
-const DECOR_STONE := Color(0.438, 0.463, 0.412)
-const DECOR_STONE_LIT := Color(0.596, 0.624, 0.565)
-const DECOR_STEM := Color(0.769, 0.749, 0.678)
-const DECOR_MOSS := Color(0.361, 0.478, 0.333)
-const DECOR_PUDDLE := Color(0.302, 0.427, 0.424)
-const DECOR_CAP := Color(0.718, 0.447, 0.376)
+## 地牢装饰物：统一压暗，用锈、骨、幽蓝、暗金做少量点缀
+const DECOR_STONE := Color(0.195, 0.200, 0.210)      # 湿石/碎石
+const DECOR_STONE_LIT := Color(0.330, 0.335, 0.345)  # 受光石面
+const DECOR_STEM := Color(0.430, 0.400, 0.330)       # 枯骨/干草/木屑
+const DECOR_MOSS := Color(0.200, 0.230, 0.190)       # 阴暗苔藓（唯一保留的绿，很灰）
+const DECOR_PUDDLE := Color(0.080, 0.130, 0.155)     # 积水，幽暗青蓝
+const DECOR_CAP := Color(0.400, 0.140, 0.110)        # 锈红/毒菇/血迹
 
 ## 整体透明度
 @export var intensity := 1.0

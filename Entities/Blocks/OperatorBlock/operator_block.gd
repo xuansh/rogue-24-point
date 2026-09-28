@@ -17,6 +17,8 @@ var calculate_result : int
 var cost : int = 0
 ## 本场战斗的费用池 同样由 BlockSystem 在 add_child 之前注入
 var battle_state : BattleState
+## 存储对应的deck数组
+var reso : DeckBlock
 
 ## 聚焦时的放大倍率
 const FOCUS_SCALE := 1.12
@@ -55,6 +57,15 @@ func _ready() -> void:
 			is_mouse_in_area = false
 			block_unfocus()
 	)
+	
+	@warning_ignore("unused_parameter")
+	SignalBus.player_turn_exited.connect(
+		func(payload : SignalBus.PlayerTurnExitedPayload):
+			# 给deck方向发信号
+			var request_payload := SignalBus.OperatorBlockRemovalRequestedPayload.new()
+			request_payload.operator_block = self
+			SignalBus.operator_block_removal_requested.emit(request_payload)
+	)
 	# origin_position 不能在这里取：CardContainer(HBoxContainer) 是延迟排版的
 	# _ready() 里读到的还是场景默认值 (0,0)
 	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -92,7 +103,7 @@ func _resolve_drop() -> void:
 	payload.operator_block = self
 	# 发 removal_requested 而不是 dropped: 前者给 DeckSystem 移牌，
 	# 后者由 DeckSystem 移完之后再发，给 EnemySystem 结算伤害
-	SignalBus.operator_block_removal_requested.emit(payload)
+	SignalBus.operator_block_usage_request_payload.emit(payload)
 
 ## 费用不足的反馈: 徽章闪一下红再淡回原色。
 ## 用 modulate 而不是改 StyleBoxFlat: 那个 stylebox 是场景内的 SubResource，

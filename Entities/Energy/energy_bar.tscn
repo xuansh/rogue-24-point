@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bq1wm5k8x0evn"]
+
+[ext_resource type="Script" uid="uid://c3n7rg1y0bqk" path="res://Entities/Energy/energy_bar.gd" id="1_energy"]
+
+[node name="EnergyBar" type="Node2D"]
+script = ExtResource("1_energy")

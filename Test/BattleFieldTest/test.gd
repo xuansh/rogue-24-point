@@ -14,6 +14,12 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("KeyBoard-W"):
 		self.visible = !self.visible
+	elif event.is_action_pressed("Keyboard-P"):
+		var bs : BattleSystem = BattleField.battle_system
+		var state : DeckState = bs.deck_system.deck_state
+		print("Draw Pile : ", state.draw_pile)
+		print("Hand Pile : ", state.hand_pile)
+		print("Discard Pile : ", state.discard_pile)
 
 func _on_decrease_player_hp_button_pressed():
 	BattleField.battle_system.player_system.decrease_hp(10)

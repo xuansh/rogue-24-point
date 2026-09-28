@@ -4,11 +4,13 @@ extends Node
 #region TurnSystem
 #signal turn_phase_changed(new_phase : TurnSystem.TurnPhase)
 class PlayerTurnStartedPayload extends RefCounted:
-	pass
+	var draw_cards_per_turn : int
 signal player_turn_started(payload : PlayerTurnStartedPayload)
 
+## 玩家回合结束发出的信号
+## 目前有: [member operator_block]
 class PlayerTurnExitedPayload extends RefCounted:
-	pass
+	var operator_block : OperatorBlock
 signal player_turn_exited(payload : PlayerTurnExitedPayload) 
 
 class EnemyTurnStartedPayload extends RefCounted:
@@ -40,9 +42,16 @@ signal player_hp_changed(payload : PlayerHPChangedPayload)
 
 #region EnemySystem
 class EnemyHPChangedPayload extends RefCounted:
+	var changed_hp : int
 	var enemy_hp : int
 	var enemy_max_hp : int
 signal enemy_hp_changed(payload : EnemyHPChangedPayload)
+
+## 目前什么也没有
+class EnemyDiedPayload extends RefCounted:
+	pass
+## 敌人死亡时发出的信号
+signal enemy_died(payload : EnemyDiedPayload)
 #endregion
 
 #region BlockSystem
@@ -73,8 +82,16 @@ class OperatorBlockDroppedPayload extends RefCounted:
 	var operator_block : OperatorBlock
 signal operator_block_dropped(payload : OperatorBlockDroppedPayload)
 
+class OperatorBlockUsageRequestPayload extends RefCounted:
+	var calculate_result : int
+	var operator_block : OperatorBlock
+## 请求使用某一个[member OperatorBlock]时发出的信号，与[signal operator_block_removal_requested]有顺连关系
+signal operator_block_usage_request_payload(payload : OperatorBlockUsageRequestPayload)
+
+## 该类有: [member calculate_result] [member operator_block]
 class OperatorBlockRemovalRequestedPayload extends RefCounted:
 	var calculate_result : int
 	var operator_block : OperatorBlock
+## 请求移除某一个[member OperatorBlock]时发出的信号
 signal operator_block_removal_requested(payload : OperatorBlockRemovalRequestedPayload)
 #endregion

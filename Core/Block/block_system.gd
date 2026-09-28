@@ -12,6 +12,8 @@ func init(_battle_system : BattleSystem):
 ## 不知道怎么描述这个函数 就是当摸牌信号(pile_draw_started)发出时 会调用这个函数 前面的信号每摸一次牌都会发出信号
 func _on_pile_draw_started(payload : SignalBus.PileDrawStartedPayload) -> void:
 	var node := payload.deck_block.block_packed_scene.instantiate() as OperatorBlock
+	# 存儲每個實體與deck虛擬的一一對應關系
+	node.reso = payload.deck_block
 	# cost 得在 add_child 之前写: add_child 会触发 _ready(), 那时才有值可以填 label
 	node.cost = payload.deck_block.cost
 	# 费用池也一并注入: 卡片不自己去捞全局或沿父链找 BattleSystem

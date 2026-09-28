@@ -8,6 +8,7 @@ var deck_system : DeckSystem
 var player_system : PlayerSystem
 
 var current_phase : TurnPhase
+var turn_state := TurnState.new()
 
 enum TurnPhase{
 	IDLE,			# 战斗开始的准备阶段
@@ -25,7 +26,7 @@ func init(_battle_system : BattleSystem) -> void:
 	self.player_system = _battle_system.player_system
 	
 	self.battle_system.end_button.pressed.connect(end_player_turn)
-	start_battle()
+	SignalBus.enemy_died.connect(end_battle)
 
 ## 改变回合 
 func change_turn_phase(new_phase : TurnPhase):
@@ -48,9 +49,8 @@ func start_player_turn():
 	# 费用点每回合回填成上限: 上限在 PlayerState，本场打剩多少在 BattleState
 	battle_system.battle_state.cost_point = player_system.player_state.max_cost_point
 	#ALERT change_turn_phase(TurnPhase.PLAYER_TURN)
-	
-	deck_system.draw_draw_pile(player_system.player_state.draw_cards_per_turn)
 	var payload := SignalBus.PlayerTurnStartedPayload.new()
+	payload.draw_cards_per_turn = player_system.player_state.draw_cards_per_turn
 	SignalBus.player_turn_started.emit(payload)
 
 func end_player_turn():
@@ -60,22 +60,20 @@ func end_player_turn():
 	start_enemies_turn()
 
 func start_enemies_turn():
-	var enemies_state = enemy_system.enemies_state
-	for i in range(enemies_state.size()):
-		start_enemy_turn(i)
-	
+	start_enemy_turn()
+
 	end_enemies_turn()
 
-func start_enemy_turn(index : int):
-	var e_state : EnemyState = enemy_system.enemies_state[index]
+func start_enemy_turn():
+	var e_state : EnemyState = enemy_system.enemy_state
 	var payload := SignalBus.EnemyTurnStartedPayload.new()
 	payload._enemy_state = e_state
 	SignalBus.enemy_turn_started.emit(payload)
 	change_turn_phase(TurnPhase.ENEMY_TURN)
-	end_enemy_turn(index)
+	end_enemy_turn()
 
-func end_enemy_turn(index : int):
-	var e_state : EnemyState = enemy_system.enemies_state[index]
+func end_enemy_turn():
+	var e_state : EnemyState = enemy_system.enemy_state
 	var payload := SignalBus.EnemyTurnExitedPayload.new()
 	payload._enemy_state = e_state
 	SignalBus.enemy_turn_exited.emit(payload)
@@ -84,23 +82,24 @@ func end_enemies_turn():
 	start_transition_of_turn()
 
 func start_transition_of_turn():
-	var b_state = battle_system.battle_state
+	#var b_state = battle_system.battle_state
 	
 	change_turn_phase(TurnPhase.TRANSITION)
-	if b_state.current_turn >= 8:
-		end_battle()
-	else:
+	if !turn_state.is_battle_finished:
 		start_player_turn()
+	else:
+		print("Battle finished!")
 
 
-
-func end_battle():
-	change_turn_phase(TurnPhase.END)
+@warning_ignore("unused_parameter")
+func end_battle(payload : SignalBus.EnemyDiedPayload):
+	#change_turn_phase(TurnPhase.END)
+	turn_state.is_battle_finished = true
 
 #endregion
 
-func _on_turn_phase_changed(new_phase : TurnPhase):
-	pass
+#func _on_turn_phase_changed(new_phase : TurnPhase):
+	#pass
 
 
 

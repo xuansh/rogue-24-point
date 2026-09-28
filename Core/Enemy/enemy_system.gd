@@ -1,7 +1,7 @@
 extends Node
 class_name EnemySystem
 
-var enemies_state : Array[EnemyState]
+var enemy_state : EnemyState
 var buffer_system : BufferSystem
 
 func init(battle_system : BattleSystem):
@@ -12,18 +12,23 @@ func init(battle_system : BattleSystem):
 	SignalBus.enemy_turn_exited.connect(_on_enemy_turn_exited)
 	SignalBus.operator_block_dropped.connect(_on_block_dropped)
 
-	for i in range(enemies_state.size()):
-		var state := enemies_state[i]
-		state.enemy_node = state.enemy_data.enemy_packed_scene.instantiate()
-		battle_system.root.get_node("Entities").get_node("EnemiesContainer").add_child(state.enemy_node)
-		state.enemy_node.position = IsoFloor.mirror(IsoFloor.ANCHOR)
-		state.reset_behavior()
-		# 开局先放一个数字块: 玩家先手, 第一回合 buffer 全空的话就没牌可打
-		state.spawn_block_value = state.enemy_data.random_value_spawn_block()
-		# 初始化暴擊傷害
-		state.enemy_data.random_critical_point()
-		print(state.enemy_data.critical_point)
-		self.buffer_system.spawn_number_block_in_buffer(state.spawn_block_value)
+	var state := enemy_state
+	state.enemy_node = state.enemy_data.enemy_packed_scene.instantiate()
+	battle_system.enemies_container.add_child(state.enemy_node)
+	state.enemy_node.position = IsoFloor.mirror(IsoFloor.ANCHOR)
+	state.reset_behavior()
+	# 开局先放一个数字块: 玩家先手, 第一回合 buffer 全空的话就没牌可打
+	state.spawn_block_value = state.enemy_data.random_value_spawn_block()
+	# 初始化暴擊傷害
+	state.enemy_data.random_critical_point()
+	self.buffer_system.spawn_number_block_in_buffer(state.spawn_block_value)
+	SignalBus.enemy_hp_changed.connect(
+		func(payload : SignalBus.EnemyHPChangedPayload):
+			var popup = state.DAMAGE_POPUP.instantiate()
+			state.enemy_node.add_child(popup)
+			popup.rich_text_label.text = str(payload.changed_hp)
+	)
+
 
 func _on_enemy_turn_started(payload : SignalBus.EnemyTurnStartedPayload):
 	payload._enemy_state.float_amplitude = 10
@@ -44,12 +49,15 @@ func handle_action(state : EnemyState):
 			pass
 	state.advance_behavior()
 
-func decease_hp(num : int, index : int = 0):
-	self.enemies_state[index].enemy_data.hp -= num
+func decease_hp(num : int):
+	self.enemy_state.enemy_data.hp -= num
 
 func _on_block_dropped(payload : SignalBus.OperatorBlockDroppedPayload):
 	decease_hp(payload.calculate_result)
+	if self.enemy_state.enemy_data.hp <= 0:
+		SignalBus.enemy_died.emit(SignalBus.EnemyDiedPayload.new())
 	var changed_payload := SignalBus.EnemyHPChangedPayload.new()
-	changed_payload.enemy_hp = self.enemies_state[0].enemy_data.hp
-	changed_payload.enemy_max_hp = self.enemies_state[0].enemy_data.max_hp
+	changed_payload.enemy_hp = self.enemy_state.enemy_data.hp
+	changed_payload.enemy_max_hp = self.enemy_state.enemy_data.max_hp
+	changed_payload.changed_hp = payload.calculate_result
 	SignalBus.enemy_hp_changed.emit(changed_payload)

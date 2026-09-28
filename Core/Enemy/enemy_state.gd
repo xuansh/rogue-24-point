@@ -1,6 +1,8 @@
 extends RefCounted
 class_name EnemyState
 
+const DAMAGE_POPUP = preload("res://Entities/DamagePopup/damage_popup.tscn")
+
 var enemy_data := EnemyData.new()
 var float_amplitude : float = 0.0:
 	set(value):
