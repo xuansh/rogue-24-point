@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dvshky67sofbj" path="res://UI/Buffer/Slot/slot.tscn" id="5_ucgk7"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
 [ext_resource type="PackedScene" uid="uid://bq1wm5k8x0evn" path="res://Entities/Energy/energy_bar.tscn" id="7_energy"]
+[ext_resource type="PackedScene" uid="uid://b0a86p7m4e1xv" path="res://Entities/Cameras/camera_2d.tscn" id="9_iabn7"]
 
 [sub_resource type="Gradient" id="Gradient_star"]
 interpolation_mode = 1
@@ -206,3 +207,5 @@ text = "Discard: 0"
 [node name="Test" parent="BattleUI" unique_id=302023800 node_paths=PackedStringArray("BattleField") instance=ExtResource("5_r1jk0")]
 visible = false
 BattleField = NodePath("../..")
+
+[node name="Camera2D" parent="." unique_id=1181709586 instance=ExtResource("9_iabn7")]

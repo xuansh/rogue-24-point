@@ -8,6 +8,7 @@ var buffer_slots : HBoxContainer
 var end_button : Button
 var player_node : Node2D
 var enemies_container : Node2D
+var camera_2d : Camera2D
 
 var battle_state := BattleState.new()
 var enemy_system := EnemySystem.new()
@@ -47,3 +48,4 @@ func init():
 	buffer_slots = root.get_node("BattleUI").get_node("Buffer").get_node("Slots")
 	end_button = root.get_node("BattleUI").get_node("EndTurnButton")
 	enemies_container = root.get_node("Entities").get_node("EnemiesContainer")
+	camera_2d = root.get_node("Camera2D")

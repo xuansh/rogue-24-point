@@ -4,12 +4,14 @@ extends Control
 @onready var enter_player_turn_button: Button = $GridContainer/EnterPlayerTurnButton
 @onready var exit_player_turn_button: Button = $GridContainer/ExitPlayerTurnButton
 @onready var enter_enemies_turn_button: Button = $GridContainer/EnterEnemiesTurnButton
+@onready var add_camera_trauma: Button = $GridContainer/AddCameraTrauma
 
 func _ready() -> void:
 	decrease_player_hp_button.pressed.connect(_on_decrease_player_hp_button_pressed)
 	enter_player_turn_button.pressed.connect(_on_enter_player_turn_button_pressed)
 	exit_player_turn_button.pressed.connect(_on_exit_player_turn_button_pressed)
 	enter_enemies_turn_button.pressed.connect(_on_enter_enemies_turn_button_pressed)
+	add_camera_trauma.pressed.connect(_on_add_camera_trauma_button_pressed)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("KeyBoard-W"):
@@ -35,3 +37,7 @@ func _on_exit_player_turn_button_pressed():
 func _on_enter_enemies_turn_button_pressed():
 	var sys : BattleSystem = BattleField.battle_system
 	sys.turn_system.start_enemies_turn()
+
+func _on_add_camera_trauma_button_pressed():
+	var sys : BattleSystem = BattleField.battle_system
+	sys.camera_2d.add_trauma(0.8)

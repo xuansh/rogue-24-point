@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bh3ck3b4tun6q" path="res://Test/BattleFieldTest/EnterPlayerTurnButton.tscn" id="3_0bqxa"]
 [ext_resource type="PackedScene" uid="uid://bxtydh1omk0b8" path="res://Test/BattleFieldTest/ExitPlayerTurnButton.tscn" id="4_tb0af"]
 [ext_resource type="PackedScene" uid="uid://bmqpf3yqko8vr" path="res://Test/BattleFieldTest/EnterEnemiesTurnButton.tscn" id="5_exthk"]
+[ext_resource type="PackedScene" uid="uid://dtnybcc1imk8d" path="res://Test/BattleFieldTest/AddCameraTrauma.tscn" id="6_8h6dj"]
 
 [node name="Test" type="Control" unique_id=302023800]
 layout_mode = 3
@@ -24,7 +25,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 10
-columns = 4
+columns = 8
 
 [node name="DecreasePlayerHPButton" parent="GridContainer" unique_id=1591442706 instance=ExtResource("2_cwoir")]
 layout_mode = 2
@@ -36,4 +37,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="EnterEnemiesTurnButton" parent="GridContainer" unique_id=789857169 instance=ExtResource("5_exthk")]
+layout_mode = 2
+
+[node name="AddCameraTrauma" parent="GridContainer" unique_id=1373259703 instance=ExtResource("6_8h6dj")]
 layout_mode = 2

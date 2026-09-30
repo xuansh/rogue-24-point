@@ -51,13 +51,19 @@ func handle_action(state : EnemyState):
 
 func decease_hp(num : int):
 	self.enemy_state.enemy_data.hp -= num
+	var changed_payload := SignalBus.EnemyHPChangedPayload.new()
+	var decreased_payload := SignalBus.EnemyHPDeceasedPayload.new()
+	
+	changed_payload.enemy_hp = self.enemy_state.enemy_data.hp
+	changed_payload.enemy_max_hp = self.enemy_state.enemy_data.max_hp
+	changed_payload.changed_hp = num
+	decreased_payload.enemy_hp = self.enemy_state.enemy_data.hp
+	decreased_payload.enemy_max_hp = self.enemy_state.enemy_data.max_hp
+	decreased_payload.changed_hp = num
+	SignalBus.enemy_hp_changed.emit(changed_payload)
+	SignalBus.enemy_hp_decreased.emit(decreased_payload)
 
 func _on_block_dropped(payload : SignalBus.OperatorBlockDroppedPayload):
 	decease_hp(payload.calculate_result)
 	if self.enemy_state.enemy_data.hp <= 0:
 		SignalBus.enemy_died.emit(SignalBus.EnemyDiedPayload.new())
-	var changed_payload := SignalBus.EnemyHPChangedPayload.new()
-	changed_payload.enemy_hp = self.enemy_state.enemy_data.hp
-	changed_payload.enemy_max_hp = self.enemy_state.enemy_data.max_hp
-	changed_payload.changed_hp = payload.calculate_result
-	SignalBus.enemy_hp_changed.emit(changed_payload)

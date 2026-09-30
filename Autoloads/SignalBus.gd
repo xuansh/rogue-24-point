@@ -47,6 +47,13 @@ class EnemyHPChangedPayload extends RefCounted:
 	var enemy_max_hp : int
 signal enemy_hp_changed(payload : EnemyHPChangedPayload)
 
+class EnemyHPDeceasedPayload extends RefCounted:
+	var changed_hp : int
+	var enemy_hp : int
+	var enemy_max_hp : int
+## 当敌人血量减少时发出信号
+signal enemy_hp_decreased(payload : EnemyHPDeceasedPayload)
+
 ## 目前什么也没有
 class EnemyDiedPayload extends RefCounted:
 	pass
