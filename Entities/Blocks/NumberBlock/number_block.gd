@@ -5,7 +5,7 @@ class_name NumberBlock
 ## 一个数字块的值
 var value : int
 
-@onready var num_rich_text_label: RichTextLabel = $Area2D/NumRichTextLabel
+@onready var body: NumberShard = $Area2D/Body
 
 ## 运算块 operand 槽位的组名(见 OperatorBlock.tscn)
 const OPERAND_GROUP := "HandOperatorBlockOperandArea"
@@ -14,7 +14,9 @@ const OPERAND_NUMBER_BLOCK_NAME := "OperandNumberBlock"
 const OPERAND_NUMBER_BLOCK_SCENE = preload("uid://me7p8dhhguec")
 
 func _ready() -> void:
-	num_rich_text_label.text = str(self.value)
+	body.value = self.value
+	# 每块的抖法错开一点，一排数字块才不会像复制粘贴
+	body.variant = randi()
 	area_2d = self.get_node("Area2D")
 	area_2d.mouse_entered.connect(
 		func():
@@ -83,7 +85,7 @@ func _commit(operand : Area2D, target_operator : OperatorBlock):
 
 	# 小数字块放进槽位里
 	var number_visual := OPERAND_NUMBER_BLOCK_SCENE.instantiate()
-	number_visual.get_node("Area2D/NumRichTextLabel").text = str(self.value)
+	number_visual.get_node("Area2D/Body").value = self.value
 	operand.add_child(number_visual)
 
 	# 通知运算块这个槽位被填了

@@ -3,6 +3,8 @@ extends SceneTree
 ## 地面：哈希对同一格稳定（重绘不闪）、分布不退化（不是棋盘、不是一片同色）、
 ## 锚点落在格心上（否则玩家/敌人会像之前那样被拖偏或跟地面错位）、共享边只有一份曲线。
 ## 卡牌：刀身轮廓必须闭合在角点上，且必须是凸多边形（判定区用的就是它）。
+## 数字碎片：同理，且数字中心必须落在碎片内部、连抖动量一起不能撞到隔壁槽位。
+## 凹槽：洞口必须罩得住碎片（洞和碎片共用同一份轮廓，比例得对得上）。
 
 func _initialize() -> void:
 	var floor_script := load("res://Scenes/iso_floor.gd")
@@ -16,6 +18,8 @@ func _initialize() -> void:
 	assert(floor_script._edge_key(Vector2i(0, 0), 3) == floor_script._edge_key(Vector2i(-1, -1), 1),
 			"共享边的 key 必须一致")
 	_check_shard()
+	_check_number_shard()
+	_check_socket()
 	var mids: Array[float] = []
 	var even := 0.0
 	var odd := 0.0
@@ -68,6 +72,91 @@ func _check_shard() -> void:
 	assert(outline[outline.size() - 1].is_equal_approx(shape[0]), "轮廓必须收回到起点")
 	assert(_is_convex(shape), "刀身必须是凸多边形")
 	shard.free()
+
+## 数字碎片：同样的闭合/凸性约束，另外数字中心必须落在碎片内部
+## （轮廓是左重右尖的，中心常数写歪了数字就会飘到碎片外面）、
+## 连抖动量一起不能顶到隔壁槽位、几何必须与值无关，且分档随值单调。
+func _check_number_shard() -> void:
+	var shard_script := load("res://Entities/Blocks/NumberBlock/number_shard.gd")
+	var shape: Array = shard_script.SHARD
+	assert(_is_convex(shape), "碎片必须是凸多边形，凸性也是 _inside_convex 的前提")
+	var shard = shard_script.new()
+	var outline = shard._wobbled_outline()
+	var step: int = shard.segments + 1
+	var wobble_bound : float = shard.wobble
+	for e in shape.size():
+		assert(outline[e * step].is_equal_approx(shape[e]), "轮廓必须在角点起笔")
+	assert(outline[outline.size() - 1].is_equal_approx(shape[0]), "轮廓必须收回到起点")
+	assert(_inside_convex(shape, shard_script.NUMBER_CENTER), "数字中心必须落在碎片内部")
+	shard.free()
+
+	# 槽位 64 宽、彼此间隔 12，所以实体最远只能越过槽边 6px。
+	# 抖动量有界（= wobble），用上界算，不靠采样碰运气。
+	var reach := 0.0
+	for p in shape:
+		reach = maxf(reach, maxf(absf(p.x), absf(p.y)))
+	reach = reach + wobble_bound
+	assert(reach <= 38.0, "连抖动一起不能撞到隔壁槽位(%f)" % reach)
+
+	# 尺寸契约：分档只走颜色和辉光，几何必须与值完全无关。
+	# 一排数字块一旦大小不一，槽位看着就参差不齐，数字也不齐。
+	var small = shard_script.new()
+	var big = shard_script.new()
+	small.value = 1
+	big.value = 9
+	assert(small.scale.is_equal_approx(big.scale), "体型不能随值变化")
+	assert(small._wobbled_outline() == big._wobbled_outline(), "轮廓不能随值变化")
+	small.free()
+	big.free()
+
+	# 分档契约：1 最冷、9 最热、随值单调不减、越界要被夹住
+	var previous := -1.0
+	for v in range(1, 10):
+		var probe = shard_script.new()
+		probe.value = v
+		var t: float = probe.tier()
+		assert(t >= previous, "分档必须随值单调不减")
+		previous = t
+		probe.free()
+	var edge = shard_script.new()
+	edge.value = 0
+	assert(is_equal_approx(edge.tier(), 0.0), "低于下限要夹到最冷档")
+	edge.value = 99
+	assert(is_equal_approx(edge.tier(), 1.0), "高于上限要夹到最热档")
+	edge.free()
+
+## 凹槽：洞口必须罩得住碎片，否则碎片会盖不住洞、露出毛边。
+## 两个宿主用的是同一比值：buffer 是 64px 槽配满尺寸碎片(shape_scale 1.08)，
+## operand 是 0.63 倍的碎片配 shape_scale 0.7，两边比值相当。
+func _check_socket() -> void:
+	var socket_script := load("res://Entities/Blocks/socket_shard.gd")
+	var token_script := load("res://Entities/Blocks/NumberBlock/number_shard.gd")
+	var socket = socket_script.new()
+	var token = token_script.new()
+	var shape_radius := 0.0
+	for p in token_script.SHARD:
+		shape_radius = maxf(shape_radius, maxf(absf(p.x), absf(p.y)))
+	var socket_reach : float = (shape_radius + socket.wobble) * socket.shape_scale
+	var token_reach : float = shape_radius + token.wobble
+	assert(socket_reach >= token_reach,
+		"洞口(%f)必须罩得住碎片(%f)" % [socket_reach, token_reach])
+	socket.free()
+	token.free()
+
+## 凸多边形内部判定：点必须相对每条边都落在同一侧
+func _inside_convex(poly: Array, p: Vector2) -> bool:
+	var winding := 0
+	for i in poly.size():
+		var a: Vector2 = poly[i]
+		var b: Vector2 = poly[(i + 1) % poly.size()]
+		var cross := (b - a).cross(p - a)
+		if absf(cross) < 0.0001:
+			continue
+		var side := 1 if cross > 0.0 else -1
+		if winding != 0 and side != winding:
+			return false
+		winding = side
+	return winding != 0
 
 func _is_convex(poly: Array) -> bool:
 	var winding := 0

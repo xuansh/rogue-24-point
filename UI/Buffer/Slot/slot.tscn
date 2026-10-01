@@ -1,16 +1,8 @@
 [gd_scene format=3 uid="uid://dvshky67sofbj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
-bg_color = Color(0.157, 0.149, 0.212, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.784, 0.784, 0.831, 0.45)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[ext_resource type="Script" path="res://Entities/Blocks/socket_shard.gd" id="1_socket"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_slot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kldih"]
 size = Vector2(64, 64)
@@ -30,7 +22,9 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(32, 32)
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_slot")
+script = ExtResource("1_socket")
+shape_scale = 1.08
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1142582205 groups=["BufferSlotArea"]]
 

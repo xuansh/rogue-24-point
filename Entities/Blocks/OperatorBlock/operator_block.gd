@@ -1,6 +1,6 @@
 extends Block
 
-class_name OperatorBlock 
+class_name OperatorBlock
 
 @onready var operand_a : Area2D = $Area2D/Operand_A
 @onready var operand_b : Area2D = $Area2D/Operand_B
@@ -9,17 +9,19 @@ class_name OperatorBlock
 @onready var collision_shape : CollisionShape2D = $Area2D/CollisionShape2D
 @onready var cost_label : RichTextLabel = $Area2D/CostBadge/CostLabel
 @onready var cost_badge : Panel = $Area2D/CostBadge
+@onready var operator_label : RichTextLabel = $Area2D/OperatorRichTextLabel
+@onready var audio_stream_player : AudioStreamPlayer = $Area2D/AudioStreamPlayer
+
+@export var cost : int = 0
+@export var operator : OperatorReso.Operation
+
 
 var origin_position : Vector2
 var calculate_result : int
 ## 这张牌的打出费用 由牌库资料(DeckBlock)在生成时写入
 ## 必须在 add_child() 之前赋值: add_child 会触发 _ready() 拿它填 label
-var cost : int = 0
 ## 本场战斗的费用池 同样由 BlockSystem 在 add_child 之前注入
-var battle_state : BattleState
 ## 存储对应的deck数组
-var reso : DeckBlock
-
 ## 聚焦时的放大倍率
 const FOCUS_SCALE := 1.12
 ## 缩放围绕卡面内部的这个点生效（y 向下为正），比中心低一点，放大时视觉上像"抬起来"
@@ -47,6 +49,9 @@ func _ready() -> void:
 	var shape := ConvexPolygonShape2D.new()
 	shape.points = PackedVector2Array(CardShard.SHARD)
 	collision_shape.shape = shape
+	operator_label.text = OperatorReso.SYMBOLS[operator]
+	print(operator)
+	print(OperatorReso.SYMBOLS[operator])
 	area_2d.mouse_entered.connect(
 		func():
 			is_mouse_in_area = true
@@ -57,7 +62,7 @@ func _ready() -> void:
 			is_mouse_in_area = false
 			block_unfocus()
 	)
-	
+
 	@warning_ignore("unused_parameter")
 	SignalBus.player_turn_exited.connect(
 		func(payload : SignalBus.PlayerTurnExitedPayload):
@@ -125,6 +130,10 @@ func block_unfocus():
 func _process(delta: float) -> void:
 	if is_dragging:
 		self.global_position = get_global_mouse_position()
+		audio_stream_player.play()
+		audio_stream_player.stream_paused = false
+	else:
+		audio_stream_player.stream_paused = true
 
 ## 只动 Area2D，不动 self：self 由 HBoxContainer 排版，手改 position 会被重排覆盖
 func _animate(target_scale: float) -> void:
@@ -143,6 +152,14 @@ func operand_index(operand : Area2D) -> int:
 		return 1
 	return -1
 
+func apply_reso(_reso : DeckBlock) -> void:
+	reso = _reso
+	var op := _reso as OperatorReso
+	if op == null:
+		return
+	cost = op.cost
+	operator = op.operator
+
 ## 数字块被放进某个 operand 时触发
 func _on_operand_filled(payload : SignalBus.OperandFilledPayload):
 	if payload.operator_block != self:
@@ -159,5 +176,13 @@ func _on_operand_filled(payload : SignalBus.OperandFilledPayload):
 func _update_output():
 	if _operand_values[0] == EMPTY_OPERAND or _operand_values[1] == EMPTY_OPERAND:
 		return
-	calculate_result = _operand_values[0] + _operand_values[1]
+	match operator:
+		OperatorReso.Operation.ADD:
+			calculate_result = _operand_values[0] + _operand_values[1]
+		OperatorReso.Operation.SUB:
+			calculate_result = _operand_values[0] - _operand_values[1]
+		OperatorReso.Operation.MUL:
+			calculate_result = _operand_values[0] * _operand_values[1]
+		OperatorReso.Operation.DIV:
+			calculate_result = _operand_values[0] / _operand_values[1]
 	output_label.text = str(calculate_result)

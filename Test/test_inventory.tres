@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="TestInventory" format=3 uid="uid://b6paq8x2usjfd"]
+
+[ext_resource type="Script" uid="uid://do46qv6vk6s0u" path="res://Data/Blocks/Deck/deck_block.gd" id="1_r0kjd"]
+[ext_resource type="PackedScene" uid="uid://c7d2p864e5ld2" path="res://Entities/Blocks/OperatorBlock/OperatorBlock.tscn" id="2_2p2r6"]
+[ext_resource type="Script" uid="uid://cea4om05bcw0b" path="res://Data/Blocks/Operator/operator_reso.gd" id="3_lnlfx"]
+[ext_resource type="Script" uid="uid://g7cqvj1ujwin" path="res://Test/tres_arr_deckblock.gd" id="4_o1okh"]
+
+[sub_resource type="Resource" id="Resource_7slku"]
+script = ExtResource("3_lnlfx")
+cost = 2
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_1myag"]
+script = ExtResource("3_lnlfx")
+cost = 2
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_35nla"]
+script = ExtResource("3_lnlfx")
+cost = 2
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_nr3ym"]
+script = ExtResource("3_lnlfx")
+cost = 2
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_wctlu"]
+script = ExtResource("3_lnlfx")
+operator = 1
+cost = 1
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_x8ogy"]
+script = ExtResource("3_lnlfx")
+operator = 1
+cost = 1
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_ues3s"]
+script = ExtResource("3_lnlfx")
+operator = 1
+cost = 1
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_ypeu0"]
+script = ExtResource("3_lnlfx")
+operator = 2
+cost = 4
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[sub_resource type="Resource" id="Resource_x5n51"]
+script = ExtResource("3_lnlfx")
+operator = 2
+cost = 4
+block_packed_scene = ExtResource("2_2p2r6")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"
+
+[resource]
+script = ExtResource("4_o1okh")
+inv = Array[ExtResource("1_r0kjd")]([SubResource("Resource_7slku"), SubResource("Resource_1myag"), SubResource("Resource_35nla"), SubResource("Resource_nr3ym"), SubResource("Resource_wctlu"), SubResource("Resource_x8ogy"), SubResource("Resource_ues3s"), SubResource("Resource_ypeu0"), SubResource("Resource_x5n51")])
+metadata/_custom_type_script = "uid://g7cqvj1ujwin"

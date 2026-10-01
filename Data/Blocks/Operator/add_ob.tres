@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="OperatorReso" format=3 uid="uid://b7twysmkxydov"]
+
+[ext_resource type="PackedScene" uid="uid://c7d2p864e5ld2" path="res://Entities/Blocks/OperatorBlock/OperatorBlock.tscn" id="1_i54u4"]
+[ext_resource type="Script" uid="uid://cea4om05bcw0b" path="res://Data/Blocks/Operator/operator_reso.gd" id="2_0so6r"]
+
+[resource]
+script = ExtResource("2_0so6r")
+cost = 2
+block_packed_scene = ExtResource("1_i54u4")
+metadata/_custom_type_script = "uid://cea4om05bcw0b"

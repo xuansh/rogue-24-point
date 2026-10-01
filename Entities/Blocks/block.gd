@@ -9,3 +9,11 @@ var is_mouse_in_area : bool = false
 var is_dragging : bool = false
 ## 本次拖拽是否已经提交过 保证一次拖放只会填一个槽位
 var _is_committed : bool = false
+
+## 由 BlockSystem 在 add_child() 之前调用，把牌库数据灌进实体。
+## 每种方块在这里读自己需要的字段；BlockSystem 永远不认识具体类型。
+var reso : DeckBlock
+var battle_state : BattleState
+
+func apply_reso(_reso : DeckBlock) -> void:
+	pass

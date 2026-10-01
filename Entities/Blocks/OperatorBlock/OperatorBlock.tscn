@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ce06wm1mrbqsj" path="res://Entities/Blocks/OperatorBlock/operator_block.gd" id="1_qphgo"]
 [ext_resource type="FontFile" uid="uid://bb60mu6xj0fgm" path="res://Assets/Fonts/Frick0.3-Regular-3.otf" id="2_qphgo"]
 [ext_resource type="Script" uid="uid://8p623krrkqy5" path="res://Entities/Blocks/OperatorBlock/card_shard.gd" id="3_shard"]
+[ext_resource type="Script" uid="uid://ddo1uxnnfaxv1" path="res://Entities/Blocks/socket_shard.gd" id="4_socket"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_shard"]
 points = PackedVector2Array(-58, -56, 2, -56, 60, 0, 2, 56, -58, 56)
@@ -10,17 +11,7 @@ points = PackedVector2Array(-58, -56, 2, -56, 60, 0, 2, 56, -58, 56)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_slot"]
 size = Vector2(40, 40)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_socket"]
-bg_color = Color(0.157, 0.149, 0.212, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.55, 0.55, 0.62, 0.55)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_socket"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cost_badge"]
 bg_color = Color(0.078, 0.063, 0.118, 0.85)
@@ -61,7 +52,9 @@ offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_socket")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_socket")
+script = ExtResource("4_socket")
+shape_scale = 0.7
 
 [node name="Operand_B" type="Area2D" parent="Area2D" unique_id=227661052 groups=["HandOperatorBlockOperandArea"]]
 position = Vector2(-32, 30)
@@ -75,13 +68,15 @@ offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_socket")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_socket")
+script = ExtResource("4_socket")
+shape_scale = 0.7
 
 [node name="OperatorRichTextLabel" type="RichTextLabel" parent="Area2D" unique_id=846408634]
-offset_left = -46.0
-offset_top = -12.0
-offset_right = -18.0
-offset_bottom = 12.0
+offset_left = -51.0
+offset_top = -13.0
+offset_right = -23.0
+offset_bottom = 11.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.83, 0.79, 0.96, 1)
 theme_override_constants/paragraph_separation = -6
@@ -126,5 +121,4 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Area2D" unique_id=411059200]
-visible = false
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Area2D" unique_id=1218108180]
