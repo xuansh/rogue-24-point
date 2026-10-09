@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://deoutxc113t5n"]
+
+[ext_resource type="Script" uid="uid://bnbn6guj4axaa" path="res://Entities/cube_entity.gd" id="1_jaw65"]
+
+[node name="EnemyNode" type="Node2D" unique_id=216009392]
+editor_description = "在map中 选择进入 的 敌人节点"
+script = ExtResource("1_jaw65")
+color = Color(0.5870146, 0.015627777, 3.85046e-07, 1)

@@ -1,7 +1,7 @@
 extends Node
 
 class_name BattleSystem
- 
+
 @export var root : Node
 var card_container : Control
 var buffer_slots : HBoxContainer
@@ -20,7 +20,7 @@ var buffer_system := BufferSystem.new()
 
 func init_battle():
 	init()
-	player_system.init(self)
+	player_system.battle_init(self)
 	deck_system.init(self)
 	turn_system.init(self)
 	block_system.init(self)

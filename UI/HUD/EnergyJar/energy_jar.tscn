@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://d4gqerkj4ogfi" path="res://UI/HUD/EnergyJar/energy_jar.gd" id="1_jar"]
+
+[node name="EnergyJar" type="Control"]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -174.0
+offset_right = 144.0
+offset_bottom = -24.0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_jar")

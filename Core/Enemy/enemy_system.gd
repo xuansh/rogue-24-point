@@ -53,7 +53,7 @@ func decease_hp(num : int):
 	self.enemy_state.enemy_data.hp -= num
 	var changed_payload := SignalBus.EnemyHPChangedPayload.new()
 	var decreased_payload := SignalBus.EnemyHPDeceasedPayload.new()
-	
+
 	changed_payload.enemy_hp = self.enemy_state.enemy_data.hp
 	changed_payload.enemy_max_hp = self.enemy_state.enemy_data.max_hp
 	changed_payload.changed_hp = num
