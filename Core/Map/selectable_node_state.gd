@@ -2,4 +2,5 @@ extends RefCounted
 
 class_name SelectableNodeState
 
-var node_packed_scene : PackedScene
+var selectable_node_datas : Array[SelectableNodeData]
+var preset_position = IsoFloor.mirror(IsoFloor.ANCHOR)

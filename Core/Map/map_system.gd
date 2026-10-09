@@ -4,6 +4,7 @@ class_name MapSystem
 
 
 var player_system := PlayerSystem.new()
+var selectable_node_system := SelectableNodeSystem.new()
 
 var map_state : MapState
 @export var root : Node
