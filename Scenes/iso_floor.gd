@@ -13,6 +13,9 @@ static var DESIGN_SIZE := Vector2(
 	float(ProjectSettings.get_setting("display/window/size/viewport_height", 648)))
 ## 菱形格子宽度，等于实体方块底面宽度
 const CELL_W := 60
+## 格子半宽 / 四分之一高：菱形顶点到格心的水平 / 垂直距离
+const CELL_HW := CELL_W * 0.5
+const CELL_QH := CELL_W * 0.25
 ## 战场基准行 = 竖直中线，战场上下居中
 static var BASE_Y := DESIGN_SIZE.y * 0.5
 ## 玩家所在格 = 战场原点 = 格子 (0,0)。到中线的距离原本是 0.315 * 宽（原来的
@@ -21,27 +24,29 @@ static var ANCHOR := Vector2(
 	DESIGN_SIZE.x * 0.5 - roundf(DESIGN_SIZE.x * 0.315 / (CELL_W * 0.5)) * CELL_W * 0.5,
 	BASE_Y)
 
-const BG := Color(0.070, 0.075, 0.085)          # 地牢深处，近黑冷灰
-const TILE_A := Color(0.150, 0.158, 0.170)       # 主地砖，冷灰石
-const TILE_B := Color(0.185, 0.192, 0.205)       # 相邻地砖，略亮
-const TILE_PIT := Color(0.085, 0.090, 0.105)     # 坑/深渊，暗蓝黑
-const TILE_BRIGHT := Color(0.250, 0.255, 0.265)  # 受光地砖，冷白灰
-const LINE := Color(0.045, 0.048, 0.058, 0.85)   # 砖缝，近黑
-const MARK := Color(0.130, 0.140, 0.160, 0.55)   # 地面刻痕/污渍
+var BG := Color(0.070, 0.075, 0.085)          # 地牢深处，近黑冷灰
+var TILE_A := Color(0.150, 0.158, 0.170)       # 主地砖，冷灰石
+var TILE_B := Color(0.185, 0.192, 0.205)       # 相邻地砖，略亮
+var TILE_PIT := Color(0.085, 0.090, 0.105)     # 坑/深渊，暗蓝黑
+var TILE_BRIGHT := Color(0.250, 0.255, 0.265)  # 受光地砖，冷白灰
+var LINE := Color(0.045, 0.048, 0.058, 0.85)   # 砖缝，近黑
+var MARK := Color(0.130, 0.140, 0.160, 0.55)   # 地面刻痕/污渍
 
 ## 地牢装饰物：统一压暗，用锈、骨、幽蓝、暗金做少量点缀
-const DECOR_STONE := Color(0.195, 0.200, 0.210)      # 湿石/碎石
-const DECOR_STONE_LIT := Color(0.330, 0.335, 0.345)  # 受光石面
-const DECOR_STEM := Color(0.430, 0.400, 0.330)       # 枯骨/干草/木屑
-const DECOR_MOSS := Color(0.200, 0.230, 0.190)       # 阴暗苔藓（唯一保留的绿，很灰）
-const DECOR_PUDDLE := Color(0.080, 0.130, 0.155)     # 积水，幽暗青蓝
-const DECOR_CAP := Color(0.400, 0.140, 0.110)        # 锈红/毒菇/血迹
+var DECOR_STONE := Color(0.195, 0.200, 0.210)      # 湿石/碎石
+var DECOR_STONE_LIT := Color(0.330, 0.335, 0.345)  # 受光石面
+var DECOR_STEM := Color(0.430, 0.400, 0.330)       # 枯骨/干草/木屑
+var DECOR_MOSS := Color(0.200, 0.230, 0.190)       # 阴暗苔藓（唯一保留的绿，很灰）
+var DECOR_PUDDLE := Color(0.080, 0.130, 0.155)     # 积水，幽暗青蓝
+var DECOR_CAP := Color(0.400, 0.140, 0.110)        # 锈红/毒菇/血迹
 
 ## 整体透明度
 @export var intensity := 1.0
 ## 网格线风格：STRAIGHT = 之前的笔直网格；DUNGEON = 断续微弯的怪诞网格
 enum GridStyle { STRAIGHT, DUNGEON }
 @export var grid_style := GridStyle.DUNGEON
+enum FloorStyle { Battle, Map }
+@export var floor_style : FloorStyle = FloorStyle.Battle
 ## 地牢装饰物密度：每格出现装饰的机率，设 0 就整片关掉
 @export_range(0.0, 0.3, 0.01) var decor_density := 0.07
 
@@ -56,6 +61,17 @@ static func snap_to_cell(p: Vector2) -> Vector2:
 ## 把左侧的格子镜像到右侧（敌人站玩家对面）
 static func mirror(p: Vector2) -> Vector2:
 	return snap_to_cell(Vector2(DESIGN_SIZE.x - p.x, p.y))
+
+## 格坐标 → 世界坐标（格心）。地图上所有按格子摆放的东西（方块、路径光斑）都走
+## 这一个换算，别在别处重算 60/30/15，否则一定会跟地砖错位
+static func cell_to_world(cell: Vector2i) -> Vector2:
+	return ANCHOR + Vector2((cell.x - cell.y) * CELL_HW, (cell.x + cell.y) * CELL_QH)
+
+## 世界坐标 → 最近的格坐标，snap_to_cell 的逆运算
+static func world_to_cell(p: Vector2) -> Vector2i:
+	var u := (p.x - ANCHOR.x) / CELL_HW  # i - j
+	var v := (p.y - BASE_Y) / CELL_QH    # i + j
+	return Vector2i(roundi((u + v) * 0.5), roundi((v - u) * 0.5))
 
 ## 每格确定性伪随机：同一格无论重绘多少次（窗口缩放）结果都一样，不会闪
 static func _hash(i: int, j: int, salt: int) -> float:
@@ -122,6 +138,41 @@ func _ready() -> void:
 	if position != Vector2.ZERO:
 		push_warning("IsoFloor 带了位移，会和实体吸附用的世界网格错位，请在场景里把它归零")
 	get_viewport().size_changed.connect(_refresh)
+	match floor_style:
+		FloorStyle.Battle:
+			BG = Color(0.070, 0.075, 0.085)          # 地牢深处，近黑冷灰
+			TILE_A = Color(0.150, 0.158, 0.170)       # 主地砖，冷灰石
+			TILE_B = Color(0.185, 0.192, 0.205)       # 相邻地砖，略亮
+			TILE_PIT = Color(0.085, 0.090, 0.105)     # 坑/深渊，暗蓝黑
+			TILE_BRIGHT = Color(0.250, 0.255, 0.265)  # 受光地砖，冷白灰
+			LINE = Color(0.045, 0.048, 0.058, 0.85)   # 砖缝，近黑
+			MARK = Color(0.130, 0.140, 0.160, 0.55)   # 地面刻痕/污渍
+
+			## 地牢装饰物：统一压暗，用锈、骨、幽蓝、暗金做少量点缀
+			DECOR_STONE = Color(0.195, 0.200, 0.210)      # 湿石/碎石
+			DECOR_STONE_LIT = Color(0.330, 0.335, 0.345)  # 受光石面
+			DECOR_STEM = Color(0.430, 0.400, 0.330)       # 枯骨/干草/木屑
+			DECOR_MOSS = Color(0.200, 0.230, 0.190)       # 阴暗苔藓（唯一保留的绿，很灰）
+			DECOR_PUDDLE = Color(0.080, 0.130, 0.155)     # 积水，幽暗青蓝
+			DECOR_CAP = Color(0.400, 0.140, 0.110)        # 锈红/毒菇/血迹
+		FloorStyle.Map:
+			BG = Color(0.085, 0.125, 0.095)           # 安全区底色，明亮的林间绿
+			TILE_A = Color(0.230, 0.330, 0.235)       # 主地砖，阳光草地绿
+			TILE_B = Color(0.290, 0.395, 0.290)       # 相邻地砖，明显更亮
+			TILE_PIT = Color(0.120, 0.185, 0.140)     # 树荫/洼地，暗绿但有光透进来
+			TILE_BRIGHT = Color(0.400, 0.520, 0.380)  # 受光地砖，暖阳晒到的草绿
+			LINE = Color(0.075, 0.120, 0.085, 0.75)   # 砖缝，浅绿黑，别太抢眼
+			MARK = Color(0.230, 0.330, 0.235, 0.45)   # 地面刻痕/苔痕
+
+			## 安全区装饰物：明亮的绿系，点缀暖色（阳光、花、嫩芽）
+			DECOR_STONE = Color(0.280, 0.345, 0.290)      # 覆苔石块
+			DECOR_STONE_LIT = Color(0.470, 0.540, 0.460)  # 受光石面，晒太阳的石头
+			DECOR_STEM = Color(0.540, 0.510, 0.390)       # 干草/嫩芽茎
+			DECOR_MOSS = Color(0.340, 0.470, 0.310)       # 明亮苔藓，安全区的生机
+			DECOR_PUDDLE = Color(0.200, 0.320, 0.340)     # 清水，清透的青蓝，反光更亮
+			DECOR_CAP = Color(0.840, 0.880, 0.540)        # 阳光/野花，暖亮黄绿
+
+
 
 ## 按格子哈希挑一种装饰画出来。unit = 半格宽高，用它把单位坐标换算成菱形内的像素位置
 func _draw_decor(p: Vector2, i: int, j: int, unit: Vector2, a: float) -> void:
@@ -216,8 +267,8 @@ func _draw() -> void:
 	var vp := get_viewport_rect().size
 	draw_rect(Rect2(-vp, vp * 3.0), BG)
 
-	var hw := CELL_W * 0.5
-	var qh := CELL_W * 0.25
+	var hw := CELL_HW
+	var qh := CELL_QH
 	var origin := ANCHOR
 	var focus := Vector2(DESIGN_SIZE.x * 0.5, BASE_Y)
 	var span := int(maxf(vp.x, vp.y) / hw) + 4

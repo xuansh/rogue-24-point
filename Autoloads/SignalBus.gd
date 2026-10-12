@@ -30,6 +30,13 @@ class BattleFieldInitedPayload extends RefCounted:
 	var enemy_max_hp : int
 signal battle_field_inited(payload : BattleFieldInitedPayload)
 
+## 费用变化时发出，能量罐用它刷新。BattleState 是唯一发信人：
+## 回填、扣费全都经过 cost_point 的 setter，不会漏
+class CostPointChangedPayload extends RefCounted:
+	var cost_point : int
+	var max_cost_point : int
+signal cost_point_changed(payload : CostPointChangedPayload)
+
 #endregion
 
 #region PlayerSystem

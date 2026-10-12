@@ -5,6 +5,7 @@ extends SceneTree
 ## 卡牌：刀身轮廓必须闭合在角点上，且必须是凸多边形（判定区用的就是它）。
 ## 数字碎片：同理，且数字中心必须落在碎片内部、连抖动量一起不能撞到隔壁槽位。
 ## 凹槽：洞口必须罩得住碎片（洞和碎片共用同一份轮廓，比例得对得上）。
+## 能量罐：液面裁剪 + 费用越高液面越高。
 
 func _initialize() -> void:
 	var floor_script := load("res://Scenes/iso_floor.gd")
@@ -20,6 +21,7 @@ func _initialize() -> void:
 	_check_shard()
 	_check_number_shard()
 	_check_socket()
+	_check_energy_jar()
 	var mids: Array[float] = []
 	var even := 0.0
 	var odd := 0.0
@@ -142,6 +144,61 @@ func _check_socket() -> void:
 		"洞口(%f)必须罩得住碎片(%f)" % [socket_reach, token_reach])
 	socket.free()
 	token.free()
+
+## 能量罐：液面裁剪是这里唯一非平凡的几何，裁错了会漏液或者溢出罐子。
+## 另外盯住两条契约：费用越高液面越高（单调），0 费时罐子要是空的。
+func _check_energy_jar() -> void:
+	var jar_script := load("res://UI/HUD/EnergyJar/energy_jar.gd")
+	var jar = jar_script.new()
+
+	# 裁剪本身：方形下半边的面积必须是总面积的一半
+	var square := PackedVector2Array([Vector2(0, 0), Vector2(10, 0), Vector2(10, 10), Vector2(0, 10)])
+	assert(is_equal_approx(_area(jar._clip_below(square, -1.0)), 100.0), "整条都在液面下就不该裁掉")
+	assert(is_equal_approx(_area(jar._clip_below(square, 11.0)), 0.0), "液面在顶上就该是空的")
+	assert(is_equal_approx(_area(jar._clip_below(square, 5.0)), 50.0), "切一半面积就该是一半")
+
+	# 罐子：满费液面必须在罐腰以上（脖子根），0 费必须没液体
+	jar.max_value = 4
+	jar.current = 4
+	assert(is_equal_approx(jar._liquid_level(), jar_script.LIQUID_TOP), "满费液面该在脖子根")
+	var full : PackedVector2Array = jar._clip_below(jar_script.JAR, jar._liquid_level())
+	assert(full.size() >= 3 and _area(full) > 0.0, "满费罐子必须有液体")
+	assert(_inside(full, Vector2(0, 100)), "满费时罐腰该被液体盖住")
+	jar.current = 0
+	assert(is_equal_approx(jar._liquid_level(), jar_script.LIQUID_BOTTOM), "0 费液面该退到罐底")
+	assert(_area(jar._clip_below(jar_script.JAR, jar._liquid_level())) < 1.0, "0 费罐子该是空的")
+
+	# 单调：费用越高，液体面积越大
+	var previous := -1.0
+	for v in range(0, 5):
+		jar.current = v
+		var area := _area(jar._clip_below(jar_script.JAR, jar._liquid_level()))
+		assert(area >= previous, "液体面积必须随费用单调不减")
+		previous = area
+	jar.free()
+	print("energy jar ok: full_liquid=%d" % _area(full))
+
+## 鞋带公式算多边形面积（绝对值）
+func _area(poly: PackedVector2Array) -> float:
+	var sum := 0.0
+	for i in poly.size():
+		var a := poly[i]
+		var b := poly[(i + 1) % poly.size()]
+		sum += a.x * b.y - b.x * a.y
+	return absf(sum) * 0.5
+
+## 射线法点在多边形内，罐子不是凸的所以不能用半平面判定
+func _inside(poly: PackedVector2Array, p: Vector2) -> bool:
+	var hit := false
+	var n := poly.size()
+	for i in n:
+		var a := poly[i]
+		var b := poly[(i + 1) % n]
+		if (a.y > p.y) != (b.y > p.y):
+			var x := a.x + (p.y - a.y) / (b.y - a.y) * (b.x - a.x)
+			if x > p.x:
+				hit = not hit
+	return hit
 
 ## 凸多边形内部判定：点必须相对每条边都落在同一侧
 func _inside_convex(poly: Array, p: Vector2) -> bool:

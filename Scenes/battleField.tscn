@@ -7,16 +7,16 @@
 [ext_resource type="PackedScene" uid="uid://bb8ojt8cge1tg" path="res://Test/BattleFieldTest/test.tscn" id="5_r1jk0"]
 [ext_resource type="PackedScene" uid="uid://dvshky67sofbj" path="res://UI/Buffer/Slot/slot.tscn" id="5_ucgk7"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="6_floor"]
-[ext_resource type="PackedScene" uid="uid://bq1wm5k8x0evn" path="res://Entities/Energy/energy_bar.tscn" id="7_energy"]
+[ext_resource type="PackedScene" path="res://UI/HUD/EnergyJar/energy_jar.tscn" id="7_energy"]
 [ext_resource type="PackedScene" uid="uid://b0a86p7m4e1xv" path="res://Entities/Cameras/camera_2d.tscn" id="9_iabn7"]
 
-[sub_resource type="Gradient" id="Gradient_star"]
+[sub_resource type="Gradient" id="Gradient_iabn7"]
 interpolation_mode = 1
 offsets = PackedFloat32Array(0, 0.7527675, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0.82, 0.76, 1, 0.55, 0.6, 0.5, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_star"]
-gradient = SubResource("Gradient_star")
+gradient = SubResource("Gradient_iabn7")
 width = 16
 height = 16
 fill = 1
@@ -40,9 +40,6 @@ script = ExtResource("6_floor")
 decor_density = 0.25
 
 [node name="EnemiesContainer" type="Node2D" parent="Entities" unique_id=1407132584]
-
-[node name="EnergyBar" parent="Entities" unique_id=922419122 instance=ExtResource("7_energy")]
-position = Vector2(250, 412)
 
 [node name="Starlight" type="CPUParticles2D" parent="Entities" unique_id=1882045913]
 z_index = 2
@@ -91,6 +88,8 @@ layout_mode = 2
 
 [node name="EnemyHealthBar" parent="BattleUI/HUD/TopBar" unique_id=2050673262 instance=ExtResource("5_2qemg")]
 layout_mode = 2
+
+[node name="EnergyJar" parent="BattleUI" unique_id=1644709787 instance=ExtResource("7_energy")]
 
 [node name="Buffer" type="Control" parent="BattleUI" unique_id=2017896534]
 layout_mode = 3

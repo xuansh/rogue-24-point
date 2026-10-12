@@ -31,22 +31,19 @@ metadata/_custom_type_script = "uid://cea4om05bcw0b"
 
 [sub_resource type="Resource" id="Resource_wctlu"]
 script = ExtResource("3_lnlfx")
-operator = 1
-cost = 1
+cost = 2
 block_packed_scene = ExtResource("2_2p2r6")
 metadata/_custom_type_script = "uid://cea4om05bcw0b"
 
 [sub_resource type="Resource" id="Resource_x8ogy"]
 script = ExtResource("3_lnlfx")
-operator = 1
-cost = 1
+cost = 2
 block_packed_scene = ExtResource("2_2p2r6")
 metadata/_custom_type_script = "uid://cea4om05bcw0b"
 
 [sub_resource type="Resource" id="Resource_ues3s"]
 script = ExtResource("3_lnlfx")
-operator = 1
-cost = 1
+cost = 2
 block_packed_scene = ExtResource("2_2p2r6")
 metadata/_custom_type_script = "uid://cea4om05bcw0b"
 

@@ -17,6 +17,7 @@ var spawn_block_value : int
 var current_behavior : EnemyData.Behavior
 var _behavior_index : int = 0
 
+
 ## 进入战斗时调用 从行为循环的第一项开始
 func reset_behavior() -> void:
 	_behavior_index = 0

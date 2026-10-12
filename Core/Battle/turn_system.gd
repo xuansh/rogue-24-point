@@ -46,8 +46,8 @@ func start_battle():
 ##
 func start_player_turn():
 	battle_system.battle_state.current_turn += 1
-	# 费用点每回合回填成上限: 上限在 PlayerState，本场打剩多少在 BattleState
-	battle_system.battle_state.cost_point = player_system.player_state.max_cost_point
+	# 费用点每回合回填成上限: 上限在 BattleState，本场打剩多少也在 BattleState
+	battle_system.battle_state.cost_point = battle_system.battle_state.max_cost_point
 	#ALERT change_turn_phase(TurnPhase.PLAYER_TURN)
 	var payload := SignalBus.PlayerTurnStartedPayload.new()
 	payload.draw_cards_per_turn = player_system.player_state.draw_cards_per_turn
