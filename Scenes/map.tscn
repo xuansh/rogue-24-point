@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://1oaddvq6v56k" path="res://Core/Map/map_system.gd" id="1_26yhd"]
 [ext_resource type="Script" uid="uid://cbjirqfsimbpk" path="res://Scenes/iso_floor.gd" id="1_ci6au"]
+[ext_resource type="Script" uid="uid://600g5p5cu16r" path="res://Test/MapFieldTest/test.gd" id="1_p3ir5"]
+[ext_resource type="Script" uid="uid://bg63oqcpf5goq" path="res://Entities/Map/path_guide.gd" id="1_pathguide"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pathguide"]
+blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_star"]
 interpolation_mode = 1
@@ -17,6 +22,7 @@ fill_from = Vector2(0.517094, 0.508547)
 fill_to = Vector2(1, 0.5)
 
 [node name="map" type="Node" unique_id=1836595930]
+script = ExtResource("1_p3ir5")
 
 [node name="MapControl" type="Node" parent="." unique_id=883032760]
 
@@ -30,6 +36,11 @@ root = NodePath("../..")
 script = ExtResource("1_ci6au")
 floor_style = 1
 decor_density = 0.25
+
+[node name="PathGuide" type="Node2D" parent="Entities" unique_id=1427400295]
+material = SubResource("CanvasItemMaterial_pathguide")
+script = ExtResource("1_pathguide")
+pulse_amplitude = 0.28
 
 [node name="Starlight" type="CPUParticles2D" parent="Entities" unique_id=524755647]
 z_index = 2
@@ -47,3 +58,5 @@ initial_velocity_max = 12.0
 scale_amount_min = 0.12
 scale_amount_max = 0.45
 color = Color(0.851, 0.918, 0.851, 0.45)
+
+[node name="SelectableNodeContainer" type="Node2D" parent="Entities" unique_id=1577142607]

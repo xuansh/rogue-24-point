@@ -13,6 +13,9 @@ static var DESIGN_SIZE := Vector2(
 	float(ProjectSettings.get_setting("display/window/size/viewport_height", 648)))
 ## 菱形格子宽度，等于实体方块底面宽度
 const CELL_W := 60
+## 格子半宽 / 四分之一高：菱形顶点到格心的水平 / 垂直距离
+const CELL_HW := CELL_W * 0.5
+const CELL_QH := CELL_W * 0.25
 ## 战场基准行 = 竖直中线，战场上下居中
 static var BASE_Y := DESIGN_SIZE.y * 0.5
 ## 玩家所在格 = 战场原点 = 格子 (0,0)。到中线的距离原本是 0.315 * 宽（原来的
@@ -58,6 +61,17 @@ static func snap_to_cell(p: Vector2) -> Vector2:
 ## 把左侧的格子镜像到右侧（敌人站玩家对面）
 static func mirror(p: Vector2) -> Vector2:
 	return snap_to_cell(Vector2(DESIGN_SIZE.x - p.x, p.y))
+
+## 格坐标 → 世界坐标（格心）。地图上所有按格子摆放的东西（方块、路径光斑）都走
+## 这一个换算，别在别处重算 60/30/15，否则一定会跟地砖错位
+static func cell_to_world(cell: Vector2i) -> Vector2:
+	return ANCHOR + Vector2((cell.x - cell.y) * CELL_HW, (cell.x + cell.y) * CELL_QH)
+
+## 世界坐标 → 最近的格坐标，snap_to_cell 的逆运算
+static func world_to_cell(p: Vector2) -> Vector2i:
+	var u := (p.x - ANCHOR.x) / CELL_HW  # i - j
+	var v := (p.y - BASE_Y) / CELL_QH    # i + j
+	return Vector2i(roundi((u + v) * 0.5), roundi((v - u) * 0.5))
 
 ## 每格确定性伪随机：同一格无论重绘多少次（窗口缩放）结果都一样，不会闪
 static func _hash(i: int, j: int, salt: int) -> float:
@@ -253,8 +267,8 @@ func _draw() -> void:
 	var vp := get_viewport_rect().size
 	draw_rect(Rect2(-vp, vp * 3.0), BG)
 
-	var hw := CELL_W * 0.5
-	var qh := CELL_W * 0.25
+	var hw := CELL_HW
+	var qh := CELL_QH
 	var origin := ANCHOR
 	var focus := Vector2(DESIGN_SIZE.x * 0.5, BASE_Y)
 	var span := int(maxf(vp.x, vp.y) / hw) + 4
